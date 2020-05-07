@@ -12,6 +12,13 @@
         <module>node-tree-core</module>
         <module>node-tree-run</module>
     </modules>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.10</version>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
 </project>

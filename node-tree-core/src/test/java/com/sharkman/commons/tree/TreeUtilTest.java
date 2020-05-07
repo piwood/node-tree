@@ -19,34 +19,34 @@ class TreeUtilTest {
         Tree root = TreeUtil.buildTreeOfRootId(trees, "1");
         assertEquals(root.getId(), "1");
     }
+}
 
-    private static class Tree implements Treeable{
-        public Tree(String id, String pId) {
-            this.id = id;
-            this.pId = pId;
-        }
+class Tree implements Treeable{
+    public Tree(String id, String pId) {
+        this.id = id;
+        this.pId = pId;
+    }
 
-        private String id;
-        private String pId;
-        private List<Treeable> children;
-        @Override
-        public String getId() {
-            return id;
-        }
+    private String id;
+    private String pId;
+    private List<Treeable> children;
+    @Override
+    public String getId() {
+        return id;
+    }
 
-        @Override
-        public String getPId() {
-            return pId;
-        }
+    @Override
+    public String getPId() {
+        return pId;
+    }
 
-        @Override
-        public List<Treeable> getChildren() {
-            return children;
-        }
+    @Override
+    public List<Treeable> getChildren() {
+        return children;
+    }
 
-        @Override
-        public void setChildren(List<Treeable> children) {
-            this.children = children;
-        }
+    @Override
+    public void setChildren(List<Treeable> children) {
+        this.children = children;
     }
 }

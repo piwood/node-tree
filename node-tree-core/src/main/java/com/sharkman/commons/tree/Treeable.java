@@ -12,8 +12,27 @@ import java.util.List;
  * @since 1.0
  */
 public interface Treeable {
+    /**
+     * 获取树节点 id
+     * @return 树节点 id
+     */
     String getId();
+
+    /**
+     * 获取树节点父节点 id
+     * @return 父节点 id
+     */
     String getPId();
+
+    /**
+     * 获取子节点
+     * @return 孩子节点
+     */
     List<Treeable> getChildren();
+
+    /**
+     * 设置子节点信息
+     * @param children 子节点信息
+     */
     void setChildren(List<Treeable> children);
 }
