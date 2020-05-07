@@ -17,7 +17,7 @@ class TreeUtilTest {
         trees.add(new Tree("3", "2"));
         trees.add(new Tree("2.1", "1"));
         Tree root = TreeUtil.buildTreeOfRootId(trees, "1");
-        assertEquals(root.getId(), "1");
+        assertEquals("1", root.getId());
     }
 }
 
