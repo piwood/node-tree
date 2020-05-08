@@ -12,6 +12,7 @@
     <artifactId>node-tree-core</artifactId>
     <packaging>jar</packaging>
     <name>node-tree-core</name>
+    <version>${node.tree.core.version}</version>
     <description>生成树核心代码</description>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
