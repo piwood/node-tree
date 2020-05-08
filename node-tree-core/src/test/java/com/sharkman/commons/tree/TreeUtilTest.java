@@ -2,12 +2,9 @@ package com.sharkman.commons.tree;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
-
 class TreeUtilTest {
 
     /**
@@ -21,6 +18,16 @@ class TreeUtilTest {
     }
 
     /**
+     * 根据id获取根节点
+     */
+    @Test
+    void countNodesOfRootId() {
+        List<Tree> trees = oneRootTrees();
+        Tree root = TreeUtil.buildTreeOfRootId(trees, "1");
+        assertEquals(countNodes(Collections.singletonList(root)), trees.size());
+    }
+
+    /**
      * 根据pid获取根节点
      */
     @Test
@@ -29,6 +36,7 @@ class TreeUtilTest {
         Tree root = TreeUtil.buildTreeOfRootPId(trees, null);
         Tree expect = new Tree("1", null);
         assertEquals(expect, root);
+        assertEquals(countNodes(Collections.singletonList(root)), trees.size());
         Tree rootOrigin = root;
         root = TreeUtil.buildTreeOfRootPId(trees,"x");
         // 避免对同数据多次执行，多次执行子节点将会重复
@@ -39,6 +47,7 @@ class TreeUtilTest {
         root = TreeUtil.buildTreeOfRootPId(trees, "0");
         expect = new Tree("1", "0");
         assertEquals(expect, root);
+        assertEquals(countNodes(Collections.singletonList(root)), trees.size());
     }
 
     /**
@@ -56,6 +65,26 @@ class TreeUtilTest {
         assertTrue(root.contains(exceptRoot1));
         assertTrue(root.contains(exceptRoot2));
         assertTrue(root.contains(exceptRoot3));
+        assertEquals(countNodes(root), trees.size() - 1);
+    }
+
+    int countNodes(List<Tree> trees) {
+        if (null == trees || trees.isEmpty()) {
+            return 0;
+        }
+
+        Queue<Treeable> queue = new LinkedList<>(trees);
+        int count = 0;
+        while (!queue.isEmpty()) {
+            Treeable current = queue.poll();
+            System.out.println(current);
+            count++;
+            List<Treeable> children = current.getChildren();
+            if (null != children && !children.isEmpty()) {
+                queue.addAll(children);
+            }
+        }
+        return count;
     }
 
     private List<Tree> oneRootTrees() {
@@ -141,5 +170,14 @@ class Tree implements Treeable {
     @Override
     public int hashCode() {
         return Objects.hash(id, pId);
+    }
+
+    @Override
+    public String toString() {
+        return "Tree{" +
+                "id='" + id + '\'' +
+                ", pId='" + pId + '\'' +
+                ", children size:" + (null == children?0:children.size()) +
+                '}';
     }
 }
