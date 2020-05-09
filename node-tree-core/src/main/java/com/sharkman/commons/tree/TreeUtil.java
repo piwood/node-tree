@@ -58,7 +58,7 @@ public final class TreeUtil {
         }
         for (Treeable vo : vos) {
             Treeable father = temp.get(vo.getPId());
-            if (null == father) {
+            if (null == father || father.equals(vo)) {
                 continue;
             }
             List<Treeable> brothers = father.getChildren();

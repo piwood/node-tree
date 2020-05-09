@@ -15,12 +15,13 @@ class AutoDataTest {
     void makeRandomNodes() {
         long startTime = System.currentTimeMillis();
         String rootPid = "0";
+        int nodesCount = 10000;
         int maxChild = 7;
-        List<Treeable> nodes = AutoData.makeRandomNodes(10000, maxChild, rootPid);
-
-        System.out.println("current times : " + (System.currentTimeMillis() - startTime));
+        List<Treeable> nodes = AutoData.makeRandomNodes(nodesCount, maxChild, rootPid);
+        System.out.println("init data cost : " + (System.currentTimeMillis() - startTime) + "ms");
         Treeable root = TreeUtil.buildTreeOfRootPId(nodes, rootPid);
-        assertEquals(nodes.size(), countNodes(Collections.singletonList(root)));
+        System.out.println("construct tree cost : " + (System.currentTimeMillis() - startTime) + "ms");
+        assertEquals(nodesCount, countNodes(Collections.singletonList(root)));
         assertTrue(isMaxChildCountValid(Collections.singletonList(root), maxChild));
     }
 
@@ -28,7 +29,6 @@ class AutoDataTest {
         if (null == trees || trees.isEmpty()) {
             return false;
         }
-
         Queue<Treeable> queue = new LinkedList<>(trees);
         while (!queue.isEmpty()) {
             Treeable current = queue.poll();
@@ -49,12 +49,11 @@ class AutoDataTest {
         if (null == trees || trees.isEmpty()) {
             return 0;
         }
-
         Queue<Treeable> queue = new LinkedList<>(trees);
         int count = 0;
         while (!queue.isEmpty()) {
             Treeable current = queue.poll();
-            System.out.println(current);
+            // System.out.println(current);
             count++;
             List<Treeable> children = current.getChildren();
             if (null != children && !children.isEmpty()) {

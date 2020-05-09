@@ -23,22 +23,27 @@ public final class AutoData {
         List<Treeable> nodes = new ArrayList<>(nodesCount);
         // add root
         nodes.add(new TreeNode(String.valueOf(0), rootPid));
-        Random random = new Random(maxChild);
+        Random random = new Random(System.currentTimeMillis());
+        // traverse in interval
         // init start index border
         int startIndex = 0;
-        // traverse in interval
         while(nodes.size() < nodesCount) {
-            int endIndex = nodes.size();
-            for (int i = startIndex; i < endIndex; i++) {
-                // random children count
-                int childrenCount = random.nextInt();
+            int nextStartIndex = nodes.size();
+            for (int i = startIndex; i < nextStartIndex; i++) {
+                int childrenCount;
+                int restSeat = nodesCount - nodes.size();
+                if (restSeat <  + maxChild) {
+                    childrenCount = restSeat;
+                } else {
+                    // random children count
+                    childrenCount = random.nextInt(maxChild);
+                }
                 // add children nodes
                 for (int j = 0; j < childrenCount; j++) {
-                    nodes.add(new TreeNode(String.valueOf(i + j), String.valueOf(i)));
+                    nodes.add(new TreeNode(String.valueOf(nodes.size()), String.valueOf(i)));
                 }
-                // index offset
-                startIndex += childrenCount;
             }
+            startIndex = nextStartIndex;
         }
         return nodes;
     }
