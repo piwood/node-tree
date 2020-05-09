@@ -11,6 +11,9 @@
     <properties>
         <node.tree.core.version>1.0-SNAPSHOT</node.tree.core.version>
         <node.tree.run.version>1.0-SNAPSHOT</node.tree.run.version>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
     <modules>
         <module>node-tree-core</module>

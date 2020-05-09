@@ -13,9 +13,6 @@
     <name>node-tree-run</name>
     <description>测试生成树代码</description>
     <version>${node.tree.run.version}</version>
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
 
     <dependencies>
         <dependency>
