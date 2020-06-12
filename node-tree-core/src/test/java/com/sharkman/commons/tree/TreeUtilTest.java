@@ -68,7 +68,7 @@ class TreeUtilTest {
         assertEquals(countNodes(root), trees.size() - 1);
     }
 
-    int countNodes(List<Tree> trees) {
+    private int countNodes(List<Tree> trees) {
         if (null == trees || trees.isEmpty()) {
             return 0;
         }
@@ -125,7 +125,7 @@ class TreeUtilTest {
 }
 
 class Tree implements Treeable {
-    public Tree(String id, String pId) {
+    Tree(String id, String pId) {
         this.id = id;
         this.pId = pId;
     }

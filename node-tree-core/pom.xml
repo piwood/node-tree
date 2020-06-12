@@ -45,4 +45,16 @@
             </plugin>
         </plugins>
     </build>
+    <distributionManagement>
+        <repository>
+            <id>public-repo</id>
+            <name>thunisoft snapshots repository</name>
+            <url>http://repo.thunisoft.com/maven2/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>public-snapshots</id>
+            <name>thunisoft release repository</name>
+            <url>http://repo.thunisoft.com/maven2/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
