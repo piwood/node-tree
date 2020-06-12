@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+import static com.sharkman.commons.tree.TreeUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.*;
 class TreeUtilTest {
 
@@ -68,24 +69,7 @@ class TreeUtilTest {
         assertEquals(countNodes(root), trees.size() - 1);
     }
 
-    private int countNodes(List<Tree> trees) {
-        if (null == trees || trees.isEmpty()) {
-            return 0;
-        }
 
-        Queue<Treeable> queue = new LinkedList<>(trees);
-        int count = 0;
-        while (!queue.isEmpty()) {
-            Treeable current = queue.poll();
-            System.out.println(current);
-            count++;
-            List<Treeable> children = current.getChildren();
-            if (null != children && !children.isEmpty()) {
-                queue.addAll(children);
-            }
-        }
-        return count;
-    }
 
     private List<Tree> oneRootTrees() {
         List<Tree> trees = new ArrayList<>();

@@ -2,13 +2,16 @@ package com.sharkman.nodetreerun.runner;
 
 import com.sharkman.commons.tree.TreeUtil;
 import com.sharkman.commons.tree.Treeable;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+import static com.sharkman.commons.tree.TreeUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Slf4j
 class AutoDataTest {
 
     @Test
@@ -18,9 +21,9 @@ class AutoDataTest {
         int nodesCount = 10000;
         int maxChild = 7;
         List<Treeable> nodes = AutoData.makeRandomNodes(nodesCount, maxChild, rootPid);
-        System.out.println("init data cost : " + (System.currentTimeMillis() - startTime) + "ms");
+        log.info("init data cost : " + (System.currentTimeMillis() - startTime) + "ms");
         Treeable root = TreeUtil.buildTreeOfRootPId(nodes, rootPid);
-        System.out.println("construct tree cost : " + (System.currentTimeMillis() - startTime) + "ms");
+        log.info("construct tree cost : " + (System.currentTimeMillis() - startTime) + "ms");
         assertEquals(nodesCount, countNodes(Collections.singletonList(root)));
         assertTrue(isMaxChildCountValid(Collections.singletonList(root), maxChild));
     }
@@ -32,34 +35,18 @@ class AutoDataTest {
         Queue<Treeable> queue = new LinkedList<>(trees);
         while (!queue.isEmpty()) {
             Treeable current = queue.poll();
-            if (Optional.ofNullable(current.getChildren())
+            if (Optional.ofNullable(current).map(Treeable::getChildren)
                     .map(List::size)
                     .orElse(0) > max) {
                 return false;
             }
-            List<Treeable> children = current.getChildren();
-            if (null != children && !children.isEmpty()) {
+            List<Treeable> children = Optional.ofNullable(current)
+                    .map(Treeable::getChildren)
+                    .orElse(Collections.emptyList());
+            if (!children.isEmpty()) {
                 queue.addAll(children);
             }
         }
         return true;
-    }
-
-    private int countNodes(List<Treeable> trees) {
-        if (null == trees || trees.isEmpty()) {
-            return 0;
-        }
-        Queue<Treeable> queue = new LinkedList<>(trees);
-        int count = 0;
-        while (!queue.isEmpty()) {
-            Treeable current = queue.poll();
-            // System.out.println(current);
-            count++;
-            List<Treeable> children = current.getChildren();
-            if (null != children && !children.isEmpty()) {
-                queue.addAll(children);
-            }
-        }
-        return count;
     }
 }

@@ -94,6 +94,31 @@ public final class TreeUtil {
     }
 
     /**
+     * 计算树上有多少个节点
+     * @param trees 数结构
+     * @return 节点数量
+     */
+    public static <T extends Treeable> int countNodes(List<T> trees) {
+        if (null == trees || trees.isEmpty()) {
+            return 0;
+        }
+        Queue<Treeable> queue = new LinkedList<>(trees);
+        int count = 0;
+        while (!queue.isEmpty()) {
+            Treeable current = queue.poll();
+            count++;
+            List<Treeable> children = Optional.ofNullable(current)
+                    .map(Treeable::getChildren)
+                    .orElse(Collections.emptyList());
+            if (!children.isEmpty()) {
+                queue.addAll(children);
+            }
+        }
+        return count;
+    }
+
+
+    /**
      * 构造树核心方法
      * @param vos 树节点对象集合
      * @param <T> 树节点
