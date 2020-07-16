@@ -19,6 +19,14 @@ public final class AutoData {
     private AutoData() {
     }
 
+    /**
+     * 利用程序造数据
+     *
+     * @param nodesCount 造的节点数量
+     * @param maxChild   单级最大子节点
+     * @param rootPid    根节点id， 可以为null
+     * @return 列表数据
+     */
     public static List<Treeable> makeRandomNodes(int nodesCount, int maxChild, String rootPid) {
         List<Treeable> nodes = new ArrayList<>(nodesCount);
         // add root
@@ -32,11 +40,11 @@ public final class AutoData {
             for (int i = startIndex; i < nextStartIndex; i++) {
                 int childrenCount;
                 int restSeat = nodesCount - nodes.size();
-                if (restSeat <  + maxChild) {
+                if (restSeat < maxChild) {
                     childrenCount = restSeat;
                 } else {
                     // random children count
-                    childrenCount = random.nextInt(maxChild);
+                    childrenCount = random.nextInt(maxChild) + 1;
                 }
                 // add children nodes
                 for (int j = 0; j < childrenCount; j++) {

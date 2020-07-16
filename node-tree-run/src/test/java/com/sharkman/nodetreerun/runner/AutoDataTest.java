@@ -16,12 +16,13 @@ class AutoDataTest {
 
     @Test
     void makeRandomNodes() {
-        long startTime = System.currentTimeMillis();
         String rootPid = "0";
-        int nodesCount = 10000;
-        int maxChild = 7;
+        int nodesCount = 10;
+        int maxChild = 2;
+        long startTime = System.currentTimeMillis();
         List<Treeable> nodes = AutoData.makeRandomNodes(nodesCount, maxChild, rootPid);
         log.info("init data cost : " + (System.currentTimeMillis() - startTime) + "ms");
+        startTime = System.currentTimeMillis();
         Treeable root = TreeUtil.buildTreeOfRootPId(nodes, rootPid);
         log.info("construct tree cost : " + (System.currentTimeMillis() - startTime) + "ms");
         assertEquals(nodesCount, countNodes(Collections.singletonList(root)));
