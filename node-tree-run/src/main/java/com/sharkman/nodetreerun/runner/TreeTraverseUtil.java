@@ -92,18 +92,14 @@ public final class TreeTraverseUtil {
             return;
         }
         Deque<Treeable> queue = new LinkedList<>();
-        for (Treeable node : treeNodes) {
-            queue.push(node);
-        }
+        queue.addAll(treeNodes);
         while (!queue.isEmpty()) {
-            Treeable node = queue.pollLast();
+            Treeable node = queue.poll();
             // 输出内容，各种操作
             System.out.println(node);
             List<Treeable> children = node.getChildren();
             if (CollectionUtils.isNotEmpty(children)) {
-                for (Treeable child : children) {
-                    queue.push(child);
-                }
+                queue.addAll(children);
             }
         }
     }
