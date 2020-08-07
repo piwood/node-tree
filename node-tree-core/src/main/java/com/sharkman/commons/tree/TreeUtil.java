@@ -108,7 +108,7 @@ public final class TreeUtil {
             count++;
 
             List<Treeable> children;
-            if (null == current) {
+            if (null == current || null == current.getChildren()) {
                 children = Collections.emptyList();
             } else {
                 children = current.getChildren();

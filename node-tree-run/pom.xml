@@ -5,14 +5,13 @@
     <parent>
         <artifactId>node-tree</artifactId>
         <groupId>com.sharkman</groupId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
     </parent>
 
     <artifactId>node-tree-run</artifactId>
     <packaging>jar</packaging>
     <name>node-tree-run</name>
     <description>测试生成树代码</description>
-    <version>${node.tree.run.version}</version>
 
     <dependencies>
         <dependency>
