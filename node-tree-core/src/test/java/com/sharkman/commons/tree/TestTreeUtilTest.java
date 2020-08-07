@@ -2,19 +2,23 @@ package com.sharkman.commons.tree;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 import static com.sharkman.commons.tree.TreeUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.*;
-class TreeUtilTest {
+
+class TestTreeUtilTest {
 
     /**
      * 根据id获取根节点
      */
     @Test
     void buildTreeOfRootId() {
-        List<Tree> trees = oneRootTrees();
-        Tree root = TreeUtil.buildTreeOfRootId(trees, "1");
+        List<TestTree> trees = oneRootTrees();
+        TestTree root = TreeUtil.buildTreeOfRootId(trees, "1");
         assertEquals("1", root.getId());
     }
 
@@ -23,8 +27,8 @@ class TreeUtilTest {
      */
     @Test
     void countNodesOfRootId() {
-        List<Tree> trees = oneRootTrees();
-        Tree root = TreeUtil.buildTreeOfRootId(trees, "1");
+        List<TestTree> trees = oneRootTrees();
+        TestTree root = TreeUtil.buildTreeOfRootId(trees, "1");
         assertEquals(countNodes(Collections.singletonList(root)), trees.size());
     }
 
@@ -33,12 +37,12 @@ class TreeUtilTest {
      */
     @Test
     void buildTreeOfPid() {
-        List<Tree> trees = oneRootTrees();
-        Tree root = TreeUtil.buildTreeOfRootPId(trees, null);
-        Tree expect = new Tree("1", null);
+        List<TestTree> trees = oneRootTrees();
+        TestTree root = TreeUtil.buildTreeOfRootPId(trees, null);
+        TestTree expect = new TestTree("1", null);
         assertEquals(expect, root);
         assertEquals(countNodes(Collections.singletonList(root)), trees.size());
-        Tree rootOrigin = root;
+        TestTree rootOrigin = root;
         root = TreeUtil.buildTreeOfRootPId(trees,"x");
         // 避免对同数据多次执行，多次执行子节点将会重复
         assertEquals(4, rootOrigin.getChildren().size());
@@ -46,7 +50,7 @@ class TreeUtilTest {
         // 根节点不为null
         trees = oneRootTrees2();
         root = TreeUtil.buildTreeOfRootPId(trees, "0");
-        expect = new Tree("1", "0");
+        expect = new TestTree("1", "0");
         assertEquals(expect, root);
         assertEquals(countNodes(Collections.singletonList(root)), trees.size());
     }
@@ -56,12 +60,12 @@ class TreeUtilTest {
      */
     @Test
     void buildMultiRootTreeOfPid() {
-        List<Tree> trees = multiRootTrees();
-        List<Tree> root = TreeUtil.buildTreeOfRootPIdForList(trees, "0");
+        List<TestTree> trees = multiRootTrees();
+        List<TestTree> root = TreeUtil.buildTreeOfRootPIdForList(trees, "0");
         assertEquals(3, root.size());
-        Tree exceptRoot1 = new Tree("1", "0");
-        Tree exceptRoot2 = new Tree("01", "0");
-        Tree exceptRoot3 = new Tree("11", "0");
+        TestTree exceptRoot1 = new TestTree("1", "0");
+        TestTree exceptRoot2 = new TestTree("01", "0");
+        TestTree exceptRoot3 = new TestTree("11", "0");
 
         assertTrue(root.contains(exceptRoot1));
         assertTrue(root.contains(exceptRoot2));
@@ -70,46 +74,45 @@ class TreeUtilTest {
     }
 
 
-
-    private List<Tree> oneRootTrees() {
-        List<Tree> trees = new ArrayList<>();
-        trees.add(new Tree("1", null));
-        trees.add(new Tree("2", "1"));
-        trees.add(new Tree("3", "2"));
-        trees.add(new Tree("2.1", "1"));
+    private List<TestTree> oneRootTrees() {
+        List<TestTree> trees = new ArrayList<>();
+        trees.add(new TestTree("1", null));
+        trees.add(new TestTree("2", "1"));
+        trees.add(new TestTree("3", "2"));
+        trees.add(new TestTree("2.1", "1"));
         return trees;
     }
 
-    private List<Tree> oneRootTrees2() {
-        List<Tree> trees = new ArrayList<>();
-        trees.add(new Tree("1", "0"));
-        trees.add(new Tree("2", "1"));
-        trees.add(new Tree("3", "2"));
-        trees.add(new Tree("2.1", "1"));
+    private List<TestTree> oneRootTrees2() {
+        List<TestTree> trees = new ArrayList<>();
+        trees.add(new TestTree("1", "0"));
+        trees.add(new TestTree("2", "1"));
+        trees.add(new TestTree("3", "2"));
+        trees.add(new TestTree("2.1", "1"));
         return trees;
     }
 
-    private List<Tree> multiRootTrees() {
-        List<Tree> trees = new ArrayList<>();
-        trees.add(new Tree("1", "0"));
-        trees.add(new Tree("2", "1"));
-        trees.add(new Tree("3", "2"));
-        trees.add(new Tree("2.1", "1"));
+    private List<TestTree> multiRootTrees() {
+        List<TestTree> trees = new ArrayList<>();
+        trees.add(new TestTree("1", "0"));
+        trees.add(new TestTree("2", "1"));
+        trees.add(new TestTree("3", "2"));
+        trees.add(new TestTree("2.1", "1"));
 
-        trees.add(new Tree("01", "0"));
-        trees.add(new Tree("02", "01"));
-        trees.add(new Tree("03", "02"));
-        trees.add(new Tree("02.1", "01"));
-        trees.add(new Tree("11", "0"));
-        trees.add(new Tree("xx", "xx"));
+        trees.add(new TestTree("01", "0"));
+        trees.add(new TestTree("02", "01"));
+        trees.add(new TestTree("03", "02"));
+        trees.add(new TestTree("02.1", "01"));
+        trees.add(new TestTree("11", "0"));
+        trees.add(new TestTree("xx", "xx"));
         return trees;
     }
 
 
 }
 
-class Tree implements Treeable {
-    Tree(String id, String pId) {
+class TestTree implements Treeable {
+    TestTree(String id, String pId) {
         this.id = id;
         this.pId = pId;
     }
@@ -146,7 +149,7 @@ class Tree implements Treeable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Tree tree = (Tree) o;
+        TestTree tree = (TestTree) o;
         return Objects.equals(id, tree.id) &&
                 Objects.equals(pId, tree.pId);
     }
@@ -158,7 +161,7 @@ class Tree implements Treeable {
 
     @Override
     public String toString() {
-        return "Tree{" +
+        return "TestTree{" +
                 "id='" + id + '\'' +
                 ", pId='" + pId + '\'' +
                 ", children size:" + (null == children?0:children.size()) +

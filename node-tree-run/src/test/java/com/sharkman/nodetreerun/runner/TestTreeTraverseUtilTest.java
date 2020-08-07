@@ -11,7 +11,7 @@ import static com.sharkman.commons.tree.TreeUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TreeTraverseUtilTest {
+class TestTreeTraverseUtilTest {
 
     @Test
     void deepTraverse() {

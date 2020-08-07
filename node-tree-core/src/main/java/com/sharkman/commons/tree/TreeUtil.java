@@ -53,7 +53,6 @@ public final class TreeUtil {
                 roots.add(vo);
             }
         }
-
         return roots;
     }
 
@@ -107,9 +106,13 @@ public final class TreeUtil {
         while (!queue.isEmpty()) {
             Treeable current = queue.poll();
             count++;
-            List<Treeable> children = Optional.ofNullable(current)
-                    .map(Treeable::getChildren)
-                    .orElse(Collections.emptyList());
+
+            List<Treeable> children;
+            if (null == current) {
+                children = Collections.emptyList();
+            } else {
+                children = current.getChildren();
+            }
             if (!children.isEmpty()) {
                 queue.addAll(children);
             }
