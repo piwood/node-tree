@@ -30,7 +30,6 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <!-- Import dependency management from Spring Boot -->
                 <groupId>com.sharkman</groupId>
                 <artifactId>node-tree-core</artifactId>
                 <version>${node.tree.core.version}</version>
