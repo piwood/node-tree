@@ -1,4 +1,4 @@
-package com.sharkman.commons.tree;
+package com.sharkman.nodetree.core;
 
 import org.apache.commons.collections4.CollectionUtils;
 

@@ -19,6 +19,7 @@
     <modules>
         <module>node-tree-core</module>
         <module>node-tree-run</module>
+        <module>node-tree-annotation</module>
     </modules>
     <dependencies>
         <dependency>

@@ -1,4 +1,4 @@
-package com.sharkman.commons.tree;
+package com.sharkman.nodetree.core;
 
 import org.junit.jupiter.api.Test;
 
@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static com.sharkman.commons.tree.TreeUtil.countNodes;
+import static com.sharkman.nodetree.core.TreeUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TestTreeUtilTest {

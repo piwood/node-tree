@@ -1,13 +1,13 @@
-package com.sharkman.nodetreerun.runner;
+package com.sharkman.nodetree.runner;
 
-import com.sharkman.commons.tree.TreeUtil;
-import com.sharkman.commons.tree.Treeable;
+import com.sharkman.nodetree.core.TreeUtil;
+import com.sharkman.nodetree.core.Treeable;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static com.sharkman.commons.tree.TreeUtil.countNodes;
+import static com.sharkman.nodetree.core.TreeUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -1,9 +1,11 @@
-package com.sharkman.commons.tree;
+package com.sharkman.nodetree.core;
 
 import lombok.NonNull;
+import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * <p> Description:树工具类，利用 id，pid 生成父子形式的树结构</p>
@@ -52,6 +54,12 @@ public final class TreeUtil {
             if (predicate.test(vo)) {
                 roots.add(vo);
             }
+        }
+        // 没找到，可能为子树，整体过滤
+        if (CollectionUtils.isEmpty(roots)) {
+            roots = vos.stream()
+                    .filter(predicate)
+                    .collect(Collectors.toList());
         }
         return roots;
     }
@@ -131,6 +139,7 @@ public final class TreeUtil {
         if (null == vos || vos.isEmpty()) {
             return Collections.emptyList();
         }
+        // 可能为根节点的
         List<T> maybeRoots = new ArrayList<>();
         Map<String, T> temp = new HashMap<>(vos.size());
         // 先把所有节点都糊上
@@ -141,7 +150,7 @@ public final class TreeUtil {
         for (T vo : vos) {
             T father = temp.get(vo.getPId());
             // 没有父节点的，则为疑似父节点
-            if (null == father || father.equals(vo)) {
+            if (null == father || father == vo) {
                 maybeRoots.add(vo);
                 continue;
             }

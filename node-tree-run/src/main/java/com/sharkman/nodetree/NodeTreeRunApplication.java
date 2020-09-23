@@ -1,4 +1,4 @@
-package com.sharkman.nodetreerun;
+package com.sharkman.nodetree;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
