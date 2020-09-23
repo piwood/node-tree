@@ -147,12 +147,11 @@ public final class TreeUtil {
             }
             List<Treeable> brothers = father.getChildren();
             if (null == brothers) {
-                brothers = new LinkedList<>();
+                brothers = new ArrayList<>();
                 father.setChildren(brothers);
             }
             brothers.add(vo);
         }
-        temp.clear();
         return maybeRoots;
     }
 }

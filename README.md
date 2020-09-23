@@ -12,7 +12,7 @@ jdk8.0+maven
 <dependency>
   <groupId>com.sharkman</groupId>
   <artifactId>node-tree-core</artifactId>
-  <version>1.1</version>
+  <version>1.1.2</version>
 </dependency>
 ```
 2. 创建树节点类，并实现 Treeable 接口

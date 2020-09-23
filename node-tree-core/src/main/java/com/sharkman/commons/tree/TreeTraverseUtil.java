@@ -1,12 +1,9 @@
-package com.sharkman.nodetreerun.runner;
+package com.sharkman.commons.tree;
 
-import com.sharkman.commons.tree.Treeable;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Predicate;
 
 /**
  * <p> Description:遍历树工具类</p>
@@ -15,7 +12,7 @@ import java.util.List;
  * <br>Email: <a href="mailto:yanpengyu@thunisoft.com">yanpengyu@thunisoft.com</a></p>
  *
  * @author yanpengyu
- * @since 1.0
+ * @since 1.1.2
  */
 public final class TreeTraverseUtil {
     private TreeTraverseUtil() {
@@ -25,14 +22,17 @@ public final class TreeTraverseUtil {
      * 深度递归遍历
      *
      * @param treeNodes 数节点
+     * @param isBreak  针对每个节点执行的方法,返回 true 则停止遍历
      */
-    public static void deepTraverseOfRecursive(List<Treeable> treeNodes) {
+    public static void deepTraverseOfRecursive(List<Treeable> treeNodes, Predicate<Treeable> isBreak) {
         if (CollectionUtils.isEmpty(treeNodes)) {
             return;
         }
         for (Treeable node : treeNodes) {
-            System.out.println(node);
-            deepTraverseOfRecursive(node.getChildren());
+            if (Boolean.TRUE.equals(isBreak.test(node))) {
+                break;
+            }
+            deepTraverseOfRecursive(node.getChildren(), isBreak);
         }
     }
 
@@ -40,28 +40,32 @@ public final class TreeTraverseUtil {
      * 广度递归遍历
      *
      * @param treeNodes 数节点
+     * @param isBreak  针对每个节点执行的方法,返回 true 则停止遍历
      */
-    public static void breadthTraverseOfRecursive(List<Treeable> treeNodes) {
+    public static void breadthTraverseOfRecursive(List<Treeable> treeNodes, Predicate<Treeable> isBreak) {
         if (CollectionUtils.isEmpty(treeNodes)) {
             return;
         }
         List<Treeable> allChildren = new ArrayList<>();
         for (Treeable node : treeNodes) {
-            System.out.println(node);
+            if (Boolean.TRUE.equals(isBreak.test(node))) {
+                break;
+            }
             List<Treeable> children = node.getChildren();
             if (CollectionUtils.isNotEmpty(children)) {
                 allChildren.addAll(children);
             }
         }
-        breadthTraverseOfRecursive(allChildren);
+        breadthTraverseOfRecursive(allChildren, isBreak);
     }
 
     /**
      * 深度遍历
      *
      * @param treeNodes 数节点
+     * @param isBreak  针对每个节点执行的方法,返回 true 则停止遍历
      */
-    public static void deepTraverse(List<Treeable> treeNodes) {
+    public static void deepTraverse(List<Treeable> treeNodes, Predicate<Treeable> isBreak) {
         if (CollectionUtils.isEmpty(treeNodes)) {
             return;
         }
@@ -72,7 +76,9 @@ public final class TreeTraverseUtil {
         while (!stack.isEmpty()) {
             Treeable node = stack.pop();
             // 输出内容，各种操作
-            System.out.println(node);
+            if (Boolean.TRUE.equals(isBreak.test(node))) {
+                break;
+            }
             List<Treeable> children = node.getChildren();
             if (CollectionUtils.isNotEmpty(children)) {
                 for (Treeable child : children) {
@@ -86,8 +92,9 @@ public final class TreeTraverseUtil {
      * 广度遍历
      *
      * @param treeNodes 数节点
+     * @param isBreak  针对每个节点执行的方法,返回 true 则停止遍历
      */
-    public static void breadthTraverse(List<Treeable> treeNodes) {
+    public static void breadthTraverse(List<Treeable> treeNodes, Predicate<Treeable> isBreak) {
         if (CollectionUtils.isEmpty(treeNodes)) {
             return;
         }
@@ -96,8 +103,12 @@ public final class TreeTraverseUtil {
         while (!queue.isEmpty()) {
             Treeable node = queue.poll();
             // 输出内容，各种操作
-            System.out.println(node);
-            List<Treeable> children = node.getChildren();
+            if (Boolean.TRUE.equals(isBreak.test(node))) {
+                break;
+            }
+            List<Treeable> children = Optional.ofNullable(node)
+                    .map(Treeable::getChildren)
+                    .orElse(Collections.emptyList());
             if (CollectionUtils.isNotEmpty(children)) {
                 queue.addAll(children);
             }

@@ -12,9 +12,8 @@
     <artifactId>node-tree-core</artifactId>
     <packaging>jar</packaging>
     <name>node-tree-core</name>
-    <description>生成树核心代码</description>
+    <description>生成树工具类核心代码</description>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.jupiter.version>5.6.2</junit.jupiter.version>
     </properties>
     <dependencies>
@@ -29,6 +28,10 @@
             <artifactId>junit-platform-launcher</artifactId>
             <version>1.6.2</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
         </dependency>
     </dependencies>
 

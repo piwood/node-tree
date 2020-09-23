@@ -1,11 +1,13 @@
 package com.sharkman.nodetreerun.runner;
 
+import com.sharkman.commons.tree.TreeTraverseUtil;
 import com.sharkman.commons.tree.TreeUtil;
 import com.sharkman.commons.tree.Treeable;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static com.sharkman.commons.tree.TreeUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -17,21 +19,32 @@ class TestTreeTraverseUtilTest {
     void deepTraverse() {
         Treeable root = getTree();
         long startTime = System.currentTimeMillis();
-        assertDoesNotThrow(() -> TreeTraverseUtil.deepTraverse(Collections.singletonList(root)));
+        assertDoesNotThrow(() -> TreeTraverseUtil.deepTraverse(
+                Collections.singletonList(root), getOutputPredicate()));
         System.out.println("deep tree cost : " + (System.currentTimeMillis() - startTime) + "ms");
         startTime = System.currentTimeMillis();
-        assertDoesNotThrow(() -> TreeTraverseUtil.deepTraverseOfRecursive(Collections.singletonList(root)));
+        assertDoesNotThrow(() ->
+                TreeTraverseUtil.deepTraverseOfRecursive(Collections.singletonList(root), getOutputPredicate()));
         System.out.println("deep recursive tree cost : " + (System.currentTimeMillis() - startTime) + "ms");
+    }
+
+    private Predicate<Treeable> getOutputPredicate() {
+        return n -> {
+            System.out.println(n);
+            return false;
+        };
     }
 
     @Test
     void breadthTraverse() {
         Treeable root = getTree();
         long startTime = System.currentTimeMillis();
-        assertDoesNotThrow(() -> TreeTraverseUtil.breadthTraverse(Collections.singletonList(root)));
+        assertDoesNotThrow(() ->
+                TreeTraverseUtil.breadthTraverse(Collections.singletonList(root), getOutputPredicate()));
         System.out.println("breadth tree cost : " + (System.currentTimeMillis() - startTime) + "ms");
         startTime = System.currentTimeMillis();
-        assertDoesNotThrow(() -> TreeTraverseUtil.breadthTraverseOfRecursive(Collections.singletonList(root)));
+        assertDoesNotThrow(() ->
+                TreeTraverseUtil.breadthTraverseOfRecursive(Collections.singletonList(root), getOutputPredicate()));
         System.out.println("breadth recursive tree cost : " + (System.currentTimeMillis() - startTime) + "ms");
     }
 
