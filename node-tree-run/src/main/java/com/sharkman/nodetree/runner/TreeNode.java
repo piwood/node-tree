@@ -12,6 +12,7 @@ import java.util.Objects;
  * <br>Email: <a href="mailto:yanpengyu@thunisoft.com">yanpengyu@thunisoft.com</a></p>
  *
  * @author yanpengyu
+ * @version 1.0
  * @since 1.0
  */
 final class TreeNode implements Treeable {

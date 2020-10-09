@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
  * <br>Email: <a href="mailto:526478642@qq.com">526478642@qq.com</a></p>
  *
  * @author yanpengyu
+ * @version 1.0
  * @since 1.0
  */
 public final class TreeUtil {

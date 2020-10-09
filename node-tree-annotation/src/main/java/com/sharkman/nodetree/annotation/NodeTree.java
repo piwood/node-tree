@@ -1,0 +1,34 @@
+package com.sharkman.nodetree.annotation;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+/**
+ * <p> Description:数节点注解</p>
+ * <p> CreationTime: 2020/10/9 11:31
+ * <br>Copyright: &copy;2020 <a href="http://www.thunisoft.com">Thunisoft</a>
+ * <br>Email: <a href="mailto:yanpengyu@thunisoft.com">yanpengyu@thunisoft.com</a></p>
+ *
+ * @author yanpengyu
+ * @version 1.0
+ * @since 1.1.2
+ */
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+public @interface NodeTree {
+    /**
+     * 直接取根节点id
+     *
+     * @return 根节点id
+     */
+    String id() default "";
+
+    /**
+     * 直接取根节点父id
+     *
+     * @return 根节点父id
+     */
+    String pid() default "";
+}
