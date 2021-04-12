@@ -7,6 +7,7 @@
 jdk8.0+maven
 
 #### 使用说明
+##### 直接使用工具类
 1. 只需要引入 node-tree-core 包
 ```xml
 <dependency>
@@ -18,6 +19,16 @@ jdk8.0+maven
 2. 创建树节点类，并实现 Treeable 接口
 3. 调用 TreeUtil 对应方法实现方法调用
 
+##### 基于 NodeTree 注解返回值转化为属性结构
+1. 引入 node-tree-starter 包
+```xml
+<dependency>
+  <groupId>com.sharkman</groupId>
+  <artifactId>node-tree-starter</artifactId>
+  <version>1.1.2</version>
+</dependency>
+```
+2. 在需要的地方写注解
 #### 参与贡献
 
 1.  Fork 本仓库
