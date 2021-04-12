@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 /**
  * <p> Description:数节点注解</p>
  * <p> CreationTime: 2020/10/9 11:31
- * <br>Copyright: &copy;2020 <a href="http://www.thunisoft.com">Thunisoft</a>
- * <br>Email: <a href="mailto:yanpengyu@thunisoft.com">yanpengyu@thunisoft.com</a></p>
+ * <br>Copyright: &copy;2020 <a href="http://www.sharkman.com">Sharkman</a>
+ * <br>Email: <a href="mailto:526478642@qq.com">526478642@qq.com</a></p>
  *
  * @author yanpengyu
  * @version 1.0
@@ -19,14 +19,14 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface NodeTree {
     /**
-     * 直接取根节点id
+     * 直接取根节点id, 如果设置了此属性，则以此为准
      *
      * @return 根节点id
      */
     String id() default "";
 
     /**
-     * 直接取根节点父id
+     * 直接取根节点父id，若未设置id，则取此属性
      *
      * @return 根节点父id
      */

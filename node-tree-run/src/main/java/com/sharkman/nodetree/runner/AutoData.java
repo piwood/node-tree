@@ -9,8 +9,8 @@ import java.util.Random;
 /**
  * <p> Description:AutoData</p>
  * <p> CreationTime: 2020/5/8 18:12
- * <br>Copyright: &copy;2020 <a href="http://www.thunisoft.com">Thunisoft</a>
- * <br>Email: <a href="mailto:yanpengyu@thunisoft.com">yanpengyu@thunisoft.com</a></p>
+ * <br>Copyright: &copy;2020 <a href="http://www.sharkman.com">Sharkman</a>
+ * <br>Email: <a href="mailto:526478642@qq.com">526478642@qq.com</a></p>
  *
  * @author yanpengyu
  * @version 1.0

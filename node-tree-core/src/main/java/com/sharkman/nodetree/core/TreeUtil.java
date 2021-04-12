@@ -164,4 +164,109 @@ public final class TreeUtil {
         }
         return maybeRoots;
     }
+
+    /**
+     * 根据权限反向构造树结构
+     *
+     * @param treeNodes 组织机构树
+     * @param ids       树id
+     * @param rootId    根节点id
+     * @return 组织机构根层节点
+     */
+    public static <T extends Treeable> List<T> constructTreeForSpecifyNode(
+            List<T> treeNodes, List<String> ids, String rootId) {
+        // 构造节点映射对象
+        Map<String, T> temp = constructTempMap(treeNodes);
+        // 构造队列
+        Queue<T> queue = initQueue(ids, temp);
+        // 拼接树
+        jointTree(temp, queue);
+        // 获取根节点
+        return getRootNode(treeNodes, rootId, temp);
+    }
+
+
+    // 构造节点映射对象
+    private static <T extends Treeable> Map<String, T> constructTempMap(List<T> treeNodes) {
+        Map<String, T> temp = new HashMap<>(treeNodes.size());
+        for (T treeNode : treeNodes) {
+            temp.put(treeNode.getId(), treeNode);
+        }
+        return temp;
+    }
+
+    // 拼接树
+    private static <T extends Treeable> void jointTree(Map<String, T> temp, Queue<T> queue) {
+        while (!queue.isEmpty()) {
+            T curNode = queue.poll();
+            // 1. 把自己的父亲节点放入队列
+            if (null == curNode) {
+                throw new NullPointerException("获取数据异常，存在空节点");
+            }
+            T parent = temp.get(curNode.getPId());
+            if (null == parent) {
+                continue;
+            }
+            queue.add(parent);
+            // 2. 把自己与父亲节点关联起来
+            List<Treeable> curBrothers = parent.getChildren();
+            if (null == curBrothers) {
+                curBrothers = new ArrayList<>();
+                parent.setChildren(curBrothers);
+            }
+            if (notContainsNode(curBrothers, curNode)) {
+                curBrothers.add(curNode);
+            }
+        }
+    }
+
+    // 构造队列
+    private static <T extends Treeable> Queue<T> initQueue(List<String> ids, Map<String, T> temp) {
+        Queue<T> queue = new ArrayDeque<>();
+        for (String id : ids) {
+            T curUser = temp.get(id);
+            if (null == curUser) {
+                continue;
+            }
+            queue.add(curUser);
+        }
+        return queue;
+    }
+
+    // 获取根节点
+    private static <T extends Treeable> List<T> getRootNode(List<T> treeNodes, String rootId, Map<String, T> temp) {
+        T root = temp.get(rootId);
+        if (null != root) {
+            return Collections.singletonList(temp.get(rootId));
+        }
+        return findAllRoot(treeNodes, rootId);
+    }
+
+    // 获取所有根节点
+    private static <T extends Treeable> List<T> findAllRoot(List<T> treeNodes, String rootId) {
+        List<T> roots = new ArrayList<>();
+        for (T treeNode : treeNodes) {
+            if (null != treeNode.getPId() && treeNode.getPId().equals(rootId) &&
+                    null != treeNode.getChildren() && !treeNode.getChildren().isEmpty()) {
+                roots.add(treeNode);
+            }
+        }
+        return roots;
+    }
+
+    /**
+     * 包含
+     *
+     * @param origin   原始 list
+     * @param treeNode 树节点
+     * @return 是否包含
+     */
+    private static boolean notContainsNode(List<Treeable> origin, Treeable treeNode) {
+        for (Treeable node : origin) {
+            if (node.getId().equals(treeNode.getId())) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

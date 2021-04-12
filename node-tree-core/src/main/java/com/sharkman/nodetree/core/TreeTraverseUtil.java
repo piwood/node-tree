@@ -8,8 +8,8 @@ import java.util.function.Predicate;
 /**
  * <p> Description:遍历树工具类</p>
  * <p> CreationTime: 2020/7/16 11:45
- * <br>Copyright: &copy;2020 <a href="http://www.thunisoft.com">Thunisoft</a>
- * <br>Email: <a href="mailto:yanpengyu@thunisoft.com">yanpengyu@thunisoft.com</a></p>
+ * <br>Copyright: &copy;2020 <a href="http://www.sharkman.com">Sharkman</a>
+ * <br>Email: <a href="mailto:526478642@qq.com">526478642@qq.com</a></p>
  *
  * @author yanpengyu
  * @version 1.0

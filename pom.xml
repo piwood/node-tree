@@ -11,15 +11,18 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <node.tree.core.version>1.1.2</node.tree.core.version>
+        <node.tree.annotation.version>1.1.2</node.tree.annotation.version>
         <java.version>1.8</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <commons.collections4.version>4.4</commons.collections4.version>
+        <springboot.version>2.2.6.RELEASE</springboot.version>
     </properties>
     <modules>
         <module>node-tree-core</module>
         <module>node-tree-run</module>
         <module>node-tree-annotation</module>
+        <module>node-tree-starter</module>
     </modules>
     <dependencies>
         <dependency>
@@ -36,6 +39,11 @@
                 <groupId>com.sharkman</groupId>
                 <artifactId>node-tree-core</artifactId>
                 <version>${node.tree.core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sharkman</groupId>
+                <artifactId>node-tree-annotation</artifactId>
+                <version>${node.tree.annotation.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
