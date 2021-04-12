@@ -40,9 +40,9 @@ public class NodeTreeAspect {
             return Collections.singletonList(TreeUtil.buildTreeOfRootId(results, id));
         }
         if ("".equals(pid)) {
-            return TreeUtil.buildTreeOfRootPId(results, null);
+            return TreeUtil.buildTreeOfRootPIdForList(results, null);
         }
 
-        return TreeUtil.buildTreeOfRootPId(results, pid);
+        return TreeUtil.buildTreeOfRootPIdForList(results, pid);
     }
 }
