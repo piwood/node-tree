@@ -6,22 +6,25 @@ import com.sharkman.nodetree.core.Treeable;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * NodeTreeAspect
  * 节点树切面
+ * 用于树节点基于 {@link Treeable} 接口实现
  *
  * @author yanpengyu
- * @since 1.0
+ * @see NodeTreeAspectForAnnotation 用于树节点基于注解实现
  * 2021/4/8 8:58 PM
+ * @since 1.1.2
  */
 @Aspect
 @Component
-public class NodeTreeAspect {
+@ConditionalOnProperty(name = "node-tree.type", havingValue = "interface")
+public class NodeTreeAspectForInterface {
     /**
      * 解析方法返回值，生成树结构;
      *

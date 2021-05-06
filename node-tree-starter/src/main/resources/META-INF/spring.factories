@@ -1,1 +1,1 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.sharkman.nodetree.aspect.NodeTreeAspect
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.sharkman.nodetree.aspect.NodeTreeAspectForInterface
