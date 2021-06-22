@@ -32,8 +32,7 @@ public final class TreeUtilForAnnotation {
         if (null == vos || vos.isEmpty()) {
             return Collections.emptyList();
         }
-        TreeNodeProxy<T> proxy = TreeNodeProxy.from(vos.get(0));
-        List<T> maybeRoots = constructTree(vos, proxy);
+        List<T> maybeRoots = buildTree(vos);
         // 从疑似父节点中查找真正的父节点
         List<T> roots = new ArrayList<>();
         for (T vo : maybeRoots) {
@@ -51,13 +50,25 @@ public final class TreeUtilForAnnotation {
     }
 
     /**
+     * 构建树，返回第一级节点
+     *
+     * @param vos 原始对象
+     * @param <T> 对象类型
+     * @return 第一级节点
+     */
+    public static <T> List<T> buildTree(List<T> vos) {
+        TreeNodeProxy<T> proxy = TreeNodeProxy.from(vos.get(0));
+        return constructTree(vos, proxy);
+    }
+
+    /**
      * 构建树形结构，并返回根节点
      *
      * @param vos 所有节点数据
      * @param id  指定根节点的id，不可为null
      * @return 根节点
      */
-    public static <T extends Treeable> T buildTreeOfRootId(List<T> vos, String id) {
+    public static <T> T buildTreeOfRootId(List<T> vos, String id) {
         if (null == id) {
             throw new IllegalArgumentException("构建树失败！根节点id不能为空！");
         }
@@ -82,17 +93,7 @@ public final class TreeUtilForAnnotation {
      * @return 根节点
      */
     public static <T> T buildTreeOfRootPId(List<T> vos, String pid) {
-        if (null == vos || vos.isEmpty()) {
-            return null;
-        }
-        TreeNodeProxy<T> proxy = TreeNodeProxy.from(vos.get(0));
-        List<T> maybeRoots = constructTree(vos, proxy);
-        for (T root : maybeRoots) {
-            if (proxy.getPId(root).equals(pid)) {
-                return root;
-            }
-        }
-        return null;
+        return buildTreeOfRootPIdForList(vos, pid).get(0);
     }
 
     /**
@@ -102,8 +103,19 @@ public final class TreeUtilForAnnotation {
      * @param pid 指定根节点的父id， 可为 null
      * @return 所有根节点
      */
-    public static <T extends Treeable> List<T> buildTreeOfRootPIdForList(List<T> vos, String pid) {
-        return buildTreeForList(vos, vo -> Objects.equals(vo.getPId(), pid));
+    public static <T> List<T> buildTreeOfRootPIdForList(List<T> vos, String pid) {
+        if (null == vos || vos.isEmpty()) {
+            return Collections.emptyList();
+        }
+        TreeNodeProxy<T> proxy = TreeNodeProxy.from(vos.get(0));
+        List<T> maybeRoots = constructTree(vos, proxy);
+        List<T> result = new ArrayList<>();
+        for (T root : maybeRoots) {
+            if (Objects.equals(proxy.getPId(root), pid)) {
+                result.add(root);
+            }
+        }
+        return result;
     }
 
 

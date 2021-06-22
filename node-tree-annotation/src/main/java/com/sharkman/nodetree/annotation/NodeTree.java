@@ -31,4 +31,11 @@ public @interface NodeTree {
      * @return 根节点父id
      */
     String pid() default "";
+
+    /**
+     * 当根节点pid为 null 时，将此值设置为true
+     *
+     * @return pid 是否为 null
+     */
+    boolean isPidNull() default false;
 }
