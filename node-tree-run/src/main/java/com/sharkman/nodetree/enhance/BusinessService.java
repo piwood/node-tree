@@ -26,7 +26,7 @@ public class BusinessService {
      * @param nodesCount 节点数量
      * @return 所有节点
      */
-    @NodeTree(pid = "0")
+    @NodeTree(isPidNull = true)
     public List<Treeable> findAllNodes(int nodesCount) {
         int maxChild = 2;
         return AutoData.makeRandomNodes(nodesCount, maxChild, "0");

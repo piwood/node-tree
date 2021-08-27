@@ -25,8 +25,9 @@ final class TreeNodeProxy<T> {
 
     private static final String STR_GET = "get";
     private static final String STR_SET = "set";
-    private static final String INVOKE_ERROR_MESSAGE = "调用%s方法失败！错误信息为";
-    private static final String METHOD_NOT_FOUND_MESSAGE = "没有找到 %s 注解对应字段 %s 的getter、setter ！";
+    private static final String INVOKE_ERROR_MESSAGE =
+            "调用类%s的%s方法失败！请检查方法及类的访问符是否为public！错误信息为%s";
+    private static final String METHOD_NOT_FOUND_MESSAGE = "没有找到 %s 注解对应字段 %s 的getter或setter ！";
     private static final String FIELD_NOT_FOUND_MESSAGE = "没有找到 %s 注解的属性 ！";
     private Method nodeIdGetter;
     private Method pidGetter;
@@ -83,8 +84,9 @@ final class TreeNodeProxy<T> {
         Method childrenGetter;
         Method childrenSetter;
         try {
-            childrenGetter = clazz.getMethod(STR_GET + upperFirstCase(field.getName()));
-            childrenSetter = clazz.getMethod(STR_SET + upperFirstCase(field.getName()));
+            String camelName = upperFirstCase(field.getName());
+            childrenGetter = clazz.getDeclaredMethod(STR_GET + camelName);
+            childrenSetter = clazz.getDeclaredMethod(STR_SET + camelName, List.class);
         } catch (NoSuchMethodException e) {
             throw new IllegalArgumentException(
                     String.format(METHOD_NOT_FOUND_MESSAGE, NodeChildren.class.getName(), field.getName()), e);
@@ -128,7 +130,12 @@ final class TreeNodeProxy<T> {
                     .orElse(null);
 
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException(String.format(INVOKE_ERROR_MESSAGE, nodeIdGetter.getName()), e);
+            throw new IllegalStateException(
+                    String.format(
+                            INVOKE_ERROR_MESSAGE,
+                            targetObj.getClass().getName(),
+                            nodeIdGetter.getName(),
+                            e.getMessage()), e);
         }
     }
 
@@ -144,7 +151,11 @@ final class TreeNodeProxy<T> {
                     .map(Object::toString)
                     .orElse(null);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException(String.format(INVOKE_ERROR_MESSAGE, pidGetter.getName()), e);
+            throw new IllegalStateException(
+                    String.format(
+                            INVOKE_ERROR_MESSAGE,
+                            targetObj.getClass().getName(),
+                            pidGetter.getName(), e.getMessage()), e);
         }
     }
 
@@ -168,7 +179,11 @@ final class TreeNodeProxy<T> {
             return result;
 
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException(String.format(INVOKE_ERROR_MESSAGE, childrenGetter.getName()), e);
+            throw new IllegalStateException(
+                    String.format(
+                            INVOKE_ERROR_MESSAGE,
+                            targetObj.getClass().getName(),
+                            childrenGetter.getName(), e.getMessage()), e);
         }
     }
 
@@ -176,13 +191,18 @@ final class TreeNodeProxy<T> {
      * 设置子节点信息
      *
      * @param targetObj 目标对象
-     * @param children 子节点信息
+     * @param children  子节点信息
      */
     void setChildren(T targetObj, List<T> children) {
         try {
             childrenSetter.invoke(targetObj, children);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new IllegalStateException(String.format(INVOKE_ERROR_MESSAGE, childrenSetter.getName()), e);
+            throw new IllegalStateException(
+                    String.format(
+                            INVOKE_ERROR_MESSAGE,
+                            targetObj.getClass().getName(),
+                            childrenSetter.getName(),
+                            e.getMessage()), e);
         }
     }
 }

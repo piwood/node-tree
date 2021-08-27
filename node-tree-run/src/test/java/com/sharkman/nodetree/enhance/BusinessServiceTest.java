@@ -22,7 +22,6 @@ class BusinessServiceTest {
     void findAllNodes() {
         int nodesCount = 10;
         List<Treeable> result = businessService.findAllNodes(nodesCount);
-
         assertNotNull(result);
 
         assertEquals(1, result.size());
