@@ -35,10 +35,6 @@
             <groupId>com.sharkman</groupId>
             <artifactId>node-tree-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.sharkman</groupId>
-            <artifactId>node-tree-annotation</artifactId>
-        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
