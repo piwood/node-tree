@@ -1,8 +1,5 @@
 package com.sharkman.nodetree.runner;
 
-import com.sharkman.nodetree.annotation.NodeChildren;
-import com.sharkman.nodetree.annotation.NodeID;
-import com.sharkman.nodetree.annotation.NodePID;
 import com.sharkman.nodetree.core.Treeable;
 
 import java.util.List;
@@ -19,14 +16,11 @@ import java.util.Objects;
  * @since 1.0
  */
 public final class TreeNode implements Treeable {
-    @NodeID
     private String id;
-    @NodePID
     private String pId;
-    @NodeChildren
     private List<Treeable> children;
 
-    TreeNode(String id, String pId) {
+    public TreeNode(String id, String pId) {
         this.id = id;
         this.pId = pId;
     }

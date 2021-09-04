@@ -3,14 +3,12 @@ package com.sharkman.nodetree.aspect;
 import com.sharkman.nodetree.annotation.NodeTree;
 import com.sharkman.nodetree.annotation.RootID;
 import com.sharkman.nodetree.annotation.RootPID;
-import com.sharkman.nodetree.core.TreeUtilForAnnotation;
+import com.sharkman.nodetree.core.Treeable;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -24,15 +22,12 @@ import java.util.Optional;
  * {@link com.sharkman.nodetree.annotation.NodeID}实现
  *
  * @author yanpengyu
- * @see NodeTreeAspectForInterface 用于树节点基于接口实现
  * 2021/5/6 2:58 PM
  * @since 1.1.3
  */
 @Slf4j
 @Aspect
-@Component
-@ConditionalOnProperty(name = "node-tree.type", havingValue = "annotation", matchIfMissing = true)
-public class NodeTreeAspectForAnnotation {
+public class NodeTreeAspect {
     /**
      * 解析方法返回值，生成树结构;
      *
@@ -52,42 +47,56 @@ public class NodeTreeAspectForAnnotation {
         }
         @SuppressWarnings("unchecked")
         List<Object> returnList = (List) returnValue;
+        if (returnList.isEmpty()) {
+            return returnValue;
+        }
+        Object childNode = returnList.get(0);
+        TreeCreator creator;
+        // 如果实现了 Treeable 接口
+        if (childNode instanceof Treeable) {
+            creator = TreeCreatorForInterface.getInstance();
+        } else {
+            creator = TreeCreatorForAnnotation.getInstance();
+        }
         // 首先查看 NodeTree 节点本身是否传入了固定值
-        JudgeReturnResult returnResult = judgeOfNodeTypeValue(returnList, nodeTree);
+        JudgeReturnResult returnResult = judgeOfNodeTypeValue(returnList, nodeTree, creator);
         if (returnResult.find) {
             return returnResult.results;
         }
         // 查找参数是否有参数注解
         // 参数对象
-        returnResult = judgeOfParamsValue(returnList, joinPoint);
+        returnResult = judgeOfParamsValue(returnList, joinPoint, creator);
         if (returnResult.find) {
             return returnResult.results;
         }
-        return TreeUtilForAnnotation.buildTree(returnList);
+        // 如果没有指定计算类型，则返回所有可能节点
+        return creator.buildTree(returnList);
     }
 
 
-    private JudgeReturnResult judgeOfNodeTypeValue(List<Object> returnList, NodeTree nodeTree) {
+    private JudgeReturnResult judgeOfNodeTypeValue(
+            List<Object> returnList, NodeTree nodeTree, TreeCreator creator) {
         if (!"".equals(nodeTree.id())) {
-            return new JudgeReturnResult(TreeUtilForAnnotation.buildTreeOfRootId(returnList, nodeTree.id()));
+            return JudgeReturnResult.from(creator.buildTreeOfRootId(returnList, nodeTree.id()));
         }
         if (!"".equals(nodeTree.pid())) {
-            return new JudgeReturnResult(TreeUtilForAnnotation.buildTreeOfRootPIdForList(
+            return new JudgeReturnResult(creator.buildTreeOfRootPIdForList(
                     returnList, nodeTree.pid()
             ));
         }
         if (nodeTree.isPidNull()) {
-            return new JudgeReturnResult(TreeUtilForAnnotation.buildTreeOfRootPIdForList(
+            return new JudgeReturnResult(creator.buildTreeOfRootPIdForList(
                     returnList, null
             ));
         }
         return new JudgeReturnResult();
     }
 
-    private JudgeReturnResult judgeOfParamsValue(List<Object> returnList, ProceedingJoinPoint joinPoint) {
+    private JudgeReturnResult judgeOfParamsValue(
+            List<Object> returnList, ProceedingJoinPoint joinPoint, TreeCreator creator) {
         Object[] params = joinPoint.getArgs();
         if (null == params || 0 == params.length) {
-            return new JudgeReturnResult(TreeUtilForAnnotation.buildTree(returnList));
+            return new JudgeReturnResult(creator.buildTree(returnList));
         }
         //获取方法，此处可将signature强转为MethodSignature
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -98,16 +107,16 @@ public class NodeTreeAspectForAnnotation {
             Annotation[] curAnnotations = annotations[i];
             Object param = params[i];
             for (Annotation annotation : curAnnotations) {
-                if (annotation.annotationType().isAnnotationPresent(RootID.class)) {
+                if (annotation.annotationType() == RootID.class) {
                     if (null == param) {
                         throw new NullPointerException("RootID 为空！");
                     }
-                    return new JudgeReturnResult(
-                            TreeUtilForAnnotation.buildTreeOfRootId(returnList, param.toString())
+                    return JudgeReturnResult.from(
+                            creator.buildTreeOfRootId(returnList, param.toString())
                     );
                 }
-                if (annotation.annotationType().isAnnotationPresent(RootPID.class)) {
-                    return new JudgeReturnResult(TreeUtilForAnnotation.buildTreeOfRootPIdForList(
+                if (annotation.annotationType() == RootPID.class) {
+                    return new JudgeReturnResult(creator.buildTreeOfRootPIdForList(
                             returnList, Optional.ofNullable(param).map(Object::toString).orElse(null)
                     ));
                 }
@@ -128,9 +137,9 @@ public class NodeTreeAspectForAnnotation {
             this.results = results;
         }
 
-        JudgeReturnResult(Object result) {
-            this.find = true;
-            this.results = Collections.singletonList(result);
+        // 由于 object 是List 父类，为了避免冲突，使用静态方法创建类
+        static JudgeReturnResult from(Object result) {
+            return new JudgeReturnResult(Collections.singletonList(result));
         }
     }
 }

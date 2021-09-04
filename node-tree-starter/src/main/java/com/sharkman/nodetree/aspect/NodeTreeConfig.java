@@ -1,6 +1,6 @@
 package com.sharkman.nodetree.aspect;
 
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -13,6 +13,15 @@ import org.springframework.context.annotation.Configuration;
  * @since 2.1
  */
 @Configuration
-@ComponentScan("com.sharkman.nodetree.aspect")
 public class NodeTreeConfig {
+
+    /**
+     * 注入Bean
+     *
+     * @return 切面bean
+     */
+    @Bean
+    public NodeTreeAspect nodeTreeAspect() {
+        return new NodeTreeAspect();
+    }
 }

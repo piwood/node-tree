@@ -29,7 +29,7 @@ public final class AutoData {
      * @return 列表数据
      */
     public static List<Treeable> makeRandomNodes(int nodesCount, int maxChild, String rootPid) {
-        List<Treeable> nodes = new ArrayList<>(nodesCount);
+        List<Treeable> nodes = new ArrayList<>(nodesCount + 1);
         // add root
         nodes.add(new TreeNode(String.valueOf(0), rootPid));
         Random random = new Random(System.currentTimeMillis());
