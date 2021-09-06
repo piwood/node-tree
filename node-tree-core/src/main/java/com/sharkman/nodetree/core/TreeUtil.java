@@ -170,7 +170,7 @@ public final class TreeUtil {
      *
      * @param treeNodes 组织机构树
      * @param ids       树id
-     * @param rootId    根节点id
+     * @param rootId    子树根节点id
      * @return 组织机构根层节点
      */
     public static <T extends Treeable> List<T> constructTreeForSpecifyNode(
