@@ -136,7 +136,7 @@ public final class TreeUtil {
      * @param <T> 树节点
      * @return 返回无父节点的节点
      */
-    private static <T extends Treeable> List<T> constructTree(List<T> vos) {
+    public static <T extends Treeable> List<T> constructTree(List<T> vos) {
         if (null == vos || vos.isEmpty()) {
             return Collections.emptyList();
         }
