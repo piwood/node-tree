@@ -69,6 +69,28 @@ public class BusinessService {
      * @return 所有节点
      */
     @NodeTree
+    public List<Treeable> findSpecNodesForParams(int nodesCount, ParamsOfID paramsOfID) {
+        return mockData(nodesCount);
+    }
+
+    /**
+     * 模拟查找所有节点
+     *
+     * @param nodesCount 节点数量
+     * @return 所有节点
+     */
+    @NodeTree
+    public List<Treeable> findAllNodesForParam(int nodesCount, ParamsOfPid paramsOfPid) {
+        return mockData(nodesCount);
+    }
+
+    /**
+     * 模拟查找所有节点
+     *
+     * @param nodesCount 节点数量
+     * @return 所有节点
+     */
+    @NodeTree
     public List<Treeable> findAllNodes(int nodesCount, @RootPID String pid) {
         return mockDataForPid(nodesCount, pid);
     }

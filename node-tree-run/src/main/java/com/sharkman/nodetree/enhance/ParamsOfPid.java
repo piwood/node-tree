@@ -1,5 +1,6 @@
 package com.sharkman.nodetree.enhance;
 
+import com.sharkman.nodetree.annotation.RootPID;
 import lombok.Data;
 
 /**
@@ -11,7 +12,8 @@ import lombok.Data;
  * @since 1.1.4
  */
 @Data
-public class Params {
+public class ParamsOfPid {
     private String id;
+    @RootPID
     private String pid;
 }

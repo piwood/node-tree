@@ -41,8 +41,18 @@ class BusinessServiceTest {
         assertEquals(1, result.size());
         assertEquals(nodesCount, TreeUtil.countNodes(result));
 
+        // ------- 对象
+        ParamsOfPid pid = new ParamsOfPid();
+        pid.setPid("-");
+        result = businessService.findAllNodesForParam(nodesCount, pid);
+        assertNotNull(result);
+
+        assertEquals(1, result.size());
+        assertEquals(nodesCount, TreeUtil.countNodes(result));
+
         // ------- 不指定
         result = businessService.findAllNodesNoSign(nodesCount, "-");
+
         assertNotNull(result);
 
         assertEquals(2, result.size());
@@ -61,12 +71,22 @@ class BusinessServiceTest {
         assertEquals(1, result.size());
         assertEquals(nodesCount, TreeUtil.countNodes(result));
 
-        // ------------
+        // ------------ 注解
         result = businessService.findSpecNodes(nodesCount, "0");
         assertNotNull(result);
 
         assertEquals(1, result.size());
         assertEquals(nodesCount, TreeUtil.countNodes(result));
+
+        // ------- 对象
+        ParamsOfID id = new ParamsOfID();
+        id.setId("0");
+        result = businessService.findSpecNodesForParams(nodesCount, id);
+        assertNotNull(result);
+
+        assertEquals(1, result.size());
+        assertEquals(nodesCount, TreeUtil.countNodes(result));
+
     }
 
     /**
