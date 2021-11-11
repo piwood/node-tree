@@ -146,9 +146,11 @@ public final class TreeUtilForAnnotation {
             List<T> brothers = proxy.getChildren(father);
             if (null == brothers || brothers.isEmpty()) {
                 brothers = new ArrayList<>();
+                brothers.add(vo);
                 proxy.setChildren(father, brothers);
+            } else {
+                brothers.add(vo);
             }
-            brothers.add(vo);
         }
         return maybeRoots;
     }
