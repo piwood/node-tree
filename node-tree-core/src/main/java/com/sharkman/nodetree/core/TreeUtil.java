@@ -30,13 +30,11 @@ public final class TreeUtil {
      * @return 根节点
      */
     public static <T extends Treeable> T buildTree(List<T> vos, @NonNull Predicate<T> predicate) {
-        List<T> maybeRoots = constructTree(vos);
-        for (T vo : maybeRoots) {
-            if (predicate.test(vo)) {
-                return vo;
-            }
+        List<T> result = buildTreeForList(vos, predicate);
+        if (result.isEmpty()) {
+            return null;
         }
-        return null;
+        return result.get(0);
     }
 
     /**
@@ -76,7 +74,7 @@ public final class TreeUtil {
         if (null == id) {
             throw new IllegalArgumentException("构建树失败！根节点id不能为空！");
         }
-        return buildTree(vos, vo -> id.equals(vo.getId()));
+        return constructTreeForTemp(vos).get(id);
     }
 
     /**
@@ -131,7 +129,8 @@ public final class TreeUtil {
 
 
     /**
-     * 构造树核心方法
+     * 基本构造树
+     *
      * @param vos 树节点对象集合
      * @param <T> 树节点
      * @return 返回无父节点的节点
@@ -142,6 +141,30 @@ public final class TreeUtil {
         }
         // 可能为根节点的
         List<T> maybeRoots = new ArrayList<>();
+        Map<String, T> temp = constructTreeForTemp(vos);
+        // 构造树
+        for (T vo : vos) {
+            T father = temp.get(vo.getPId());
+            // 没有父节点的，则为疑似父节点
+            if (null == father || father == vo) {
+                maybeRoots.add(vo);
+            }
+        }
+        return maybeRoots;
+    }
+
+    /**
+     * 构造树核心方法
+     *
+     * @param vos 树节点对象集合
+     * @param <T> 树节点
+     * @return 返回无父节点的节点
+     */
+    private static <T extends Treeable> Map<String, T> constructTreeForTemp(List<T> vos) {
+        if (null == vos || vos.isEmpty()) {
+            return Collections.emptyMap();
+        }
+        // 可能为根节点的
         Map<String, T> temp = new HashMap<>(vos.size());
         // 先把所有节点都糊上
         for (T vo : vos) {
@@ -152,7 +175,6 @@ public final class TreeUtil {
             T father = temp.get(vo.getPId());
             // 没有父节点的，则为疑似父节点
             if (null == father || father == vo) {
-                maybeRoots.add(vo);
                 continue;
             }
             List<Treeable> brothers = father.getChildren();
@@ -162,7 +184,7 @@ public final class TreeUtil {
             }
             brothers.add(vo);
         }
-        return maybeRoots;
+        return temp;
     }
 
     /**

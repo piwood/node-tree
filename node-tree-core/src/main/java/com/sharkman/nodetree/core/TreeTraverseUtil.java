@@ -99,8 +99,7 @@ public final class TreeTraverseUtil {
         if (CollectionUtils.isEmpty(treeNodes)) {
             return;
         }
-        Deque<Treeable> queue = new LinkedList<>();
-        queue.addAll(treeNodes);
+        Deque<Treeable> queue = new LinkedList<>(treeNodes);
         while (!queue.isEmpty()) {
             Treeable node = queue.poll();
             // 输出内容，各种操作
