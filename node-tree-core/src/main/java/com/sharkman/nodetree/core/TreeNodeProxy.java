@@ -22,10 +22,10 @@ import static com.sharkman.nodetree.core.ReflectUtil.*;
  * @since 1.0
  */
 final class TreeNodeProxy<T> {
-    private Method nodeIdGetter;
-    private Method pidGetter;
-    private Method childrenGetter;
-    private Method childrenSetter;
+    private final Method nodeIdGetter;
+    private final Method pidGetter;
+    private final Method childrenGetter;
+    private final Method childrenSetter;
 
 
     private TreeNodeProxy(Method nodeIdGetter,
@@ -121,7 +121,7 @@ final class TreeNodeProxy<T> {
             throw new IllegalStateException("children 为非List!转化失败, 获取 children 信息失败");
         }
         @SuppressWarnings("unchecked")
-        List<T> result = (List) children;
+        List<T> result = (List<T>) children;
         return result;
 
     }

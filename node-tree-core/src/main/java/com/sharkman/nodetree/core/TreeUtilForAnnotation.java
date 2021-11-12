@@ -76,13 +76,7 @@ public final class TreeUtilForAnnotation {
             return null;
         }
         TreeNodeProxy<T> proxy = TreeNodeProxy.from(vos.get(0));
-        List<T> maybeRoots = constructTree(vos, proxy);
-        for (T root : maybeRoots) {
-            if (proxy.getId(root).equals(id)) {
-                return root;
-            }
-        }
-        return null;
+        return constructTreeForTemp(vos, proxy).get(id);
     }
 
     /**
@@ -127,9 +121,36 @@ public final class TreeUtilForAnnotation {
      * @return 返回无父节点的节点
      */
     private static <T> List<T> constructTree(List<T> vos, TreeNodeProxy<T> proxy) {
+        if (null == vos || vos.isEmpty()) {
+            return Collections.emptyList();
+        }
+        // 构造树
+        Map<String, T> temp = constructTreeForTemp(vos, proxy);
+        // 可能为根节点的
+        List<T> maybeRoots = new ArrayList<>();
+        for (T vo : vos) {
+            T father = temp.get(proxy.getPId(vo));
+            // 没有父节点的，则为疑似父节点
+            if (null == father || father == vo) {
+                maybeRoots.add(vo);
+            }
+        }
+        return maybeRoots;
+    }
+
+    /**
+     * 构造树核心方法
+     *
+     * @param vos 树节点对象集合
+     * @param <T> 树节点
+     * @return 返回无父节点的节点
+     */
+    private static <T> Map<String, T> constructTreeForTemp(List<T> vos, TreeNodeProxy<T> proxy) {
+        if (null == vos || vos.isEmpty()) {
+            return Collections.emptyMap();
+        }
         // 可能为根节点的
         // 创建代理工具对象
-        List<T> maybeRoots = new ArrayList<>();
         Map<String, T> temp = new HashMap<>(vos.size());
         // 先把所有节点都糊上
         for (T vo : vos) {
@@ -140,7 +161,6 @@ public final class TreeUtilForAnnotation {
             T father = temp.get(proxy.getPId(vo));
             // 没有父节点的，则为疑似父节点
             if (null == father || father == vo) {
-                maybeRoots.add(vo);
                 continue;
             }
             List<T> brothers = proxy.getChildren(father);
@@ -152,7 +172,7 @@ public final class TreeUtilForAnnotation {
                 brothers.add(vo);
             }
         }
-        return maybeRoots;
+        return temp;
     }
 
 
