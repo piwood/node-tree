@@ -13,9 +13,9 @@ spring-boot 2.2.6.RELEASE
   ```xml
   <dependency>
     <groupId>com.sharkman</groupId>
-    <artifactId>node-tree-starter</artifactId>
-    <version>1.1.5</version>
-  </dependency>
+  <artifactId>node-tree-starter</artifactId>
+  <version>1.1.7</version>
+</dependency>
   ```
 
 2. 创建树节点类
