@@ -14,7 +14,7 @@ spring-boot 2.2.6.RELEASE
   <dependency>
     <groupId>com.sharkman</groupId>
   <artifactId>node-tree-starter</artifactId>
-  <version>1.1.7</version>
+  <version>1.1.8</version>
 </dependency>
   ```
 
