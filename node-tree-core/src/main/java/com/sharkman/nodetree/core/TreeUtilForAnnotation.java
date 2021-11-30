@@ -109,6 +109,14 @@ public final class TreeUtilForAnnotation {
                 result.add(root);
             }
         }
+        if (!result.isEmpty()) {
+            return result;
+        }
+        for (T root : vos) {
+            if (Objects.equals(proxy.getPId(root), pid)) {
+                result.add(root);
+            }
+        }
         return result;
     }
 

@@ -48,7 +48,7 @@ public class NodeTreeAspect {
             return returnValue;
         }
         @SuppressWarnings("unchecked")
-        List<Object> returnList = (List) returnValue;
+        List<Object> returnList = (List<Object>) returnValue;
         if (returnList.isEmpty()) {
             return returnValue;
         }
@@ -168,11 +168,11 @@ public class NodeTreeAspect {
         Object[] params = joinPoint.getArgs();
         // 若方法参数是对象，则遍历对象中的参数
         for (Object param : params) {
-            Class<?> clazz = param.getClass();
             // 如果是基本类型或字符串
-            if (ReflectUtil.isPrimitiveOrWrapper(clazz) || clazz == String.class) {
+            if (null == param || ReflectUtil.isPrimitiveOrWrapper(param.getClass()) || param.getClass() == String.class) {
                 continue;
             }
+            Class<?> clazz = param.getClass();
             // 找pid注解
             Field field = ReflectUtil.findColumnByAnnotation(param.getClass().getDeclaredFields(), RootPID.class);
             if (null != field) {
