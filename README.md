@@ -4,16 +4,18 @@
 将id，pid 形式的数据生成 parent-> children 树形结构。
 
 #### 软件架构
-jdk8.0+maven
+jdk8.0+maven3  
 spring-boot 2.2.6.RELEASE
 
 #### 使用说明
 ##### 基于 NodeTree 注解返回值转化为属性结构
 1. 引入 node-tree-starter 包
+
   ```xml
-  <dependency>
-    <groupId>com.sharkman</groupId>
-  <artifactId>node-tree-starter</artifactId>
+
+<dependency>
+  <groupId>com.sharkman</groupId>
+  <artifactId>node-tree-spring-boot-starter</artifactId>
   <version>1.1.8</version>
 </dependency>
   ```
@@ -183,21 +185,27 @@ spring-boot 2.2.6.RELEASE
   
   > 说明，常用的场景是数据权限进行组织机构过滤，权限只配置人员，但是需要展示有权限的组织树。
   > 另外，此方法支持取子树，比如共4级节点，通过4级节点逆向生成树，根节点传入3级id ，则根从传入的3级开始。
-   
+
   ```java
   // 若根节点唯一 
-  // 起始构造的子节点集合
-  List<String> ids = xxxx;
-  // 最终取出的根节
-  String rootId = "root";
-  List<Treeable> roots = TreeUtil.constructTreeForSpecifyNode(nodes, ids, rootId);
+// 起始构造的子节点集合
+  List<String> ids=xxxx;
+        // 最终取出的根节
+        String rootId="root";
+        List<Treeable> roots=TreeUtil.constructTreeForSpecifyNode(nodes,ids,rootId);
   ```
 
 ##### 性能表现
-> 测试代码已添加， 见子项目 node-tree-run AutoDataTest测试类
-TODO 待补充
+
+> 测试代码已添加， 见子项目 node-tree-run AutoDataTest测试类 TODO 待补充
+
 #### 参与贡献
-1.  Fork 本仓库
-2.  新建 feature_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+
+1. Fork 本仓库
+2. 新建 feature_xxx 分支
+3. 提交代码
+4. 新建 Pull Request
+
+#### 特别感谢 JetBrains 免费的开源授权
+
+![node-tree](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains-training-partner.svg?_gl=1*ezddqc*_ga*MTIwNTEzNDU3Mi4xNjM2Njk2Njky*_ga_V0XZL7QHEB*MTYzODMyMjA5My4xLjEuMTYzODMyNDE5NC4w&_ga=2.18592505.1173776891.1638322127-1205134572.1636696692)
