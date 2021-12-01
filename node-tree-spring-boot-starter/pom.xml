@@ -7,7 +7,7 @@
         <groupId>com.sharkman</groupId>
         <version>${revision}</version>
     </parent>
-    <artifactId>node-tree-starter</artifactId>
+    <artifactId>node-tree-spring-boot-starter</artifactId>
     <name>node-tree-starter</name>
     <description>node-tree-注解形式starter</description>
     <dependencies>

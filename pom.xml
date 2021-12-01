@@ -30,7 +30,7 @@
         <module>node-tree-core</module>
         <module>node-tree-run</module>
         <module>node-tree-annotation</module>
-        <module>node-tree-starter</module>
+        <module>node-tree-spring-boot-starter</module>
     </modules>
     <dependencies>
         <dependency>
