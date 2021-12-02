@@ -207,5 +207,4 @@ spring-boot 2.2.6.RELEASE
 4. 新建 Pull Request
 
 #### 特别感谢 JetBrains 免费的开源授权
-
-![node-tree](https://resources.jetbrains.com/storage/products/company/brand/logos/jetbrains-training-partner.svg?_gl=1*ezddqc*_ga*MTIwNTEzNDU3Mi4xNjM2Njk2Njky*_ga_V0XZL7QHEB*MTYzODMyMjA5My4xLjEuMTYzODMyNDE5NC4w&_ga=2.18592505.1173776891.1638322127-1205134572.1636696692)
+![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png)
