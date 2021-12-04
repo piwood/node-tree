@@ -9,7 +9,7 @@ spring-boot 2.2.6.RELEASE
 
 #### 使用说明
 ##### 基于 NodeTree 注解返回值转化为属性结构
-1. 引入 node-tree-starter 包
+1. 引入 node-tree-spring-boot-starter 包
 
   ```xml
 
