@@ -57,8 +57,8 @@ public final class TreeUtilForAnnotation {
      * @return 第一级节点
      */
     public static <T> List<T> buildTree(List<T> vos) {
-        TreeNodeProxy<T> proxy = TreeNodeProxy.from(vos.get(0));
-        return constructTree(vos, proxy);
+        TreeNodeWrapperAnnotation<T> wrapper = TreeNodeWrapperAnnotation.from(vos.get(0));
+        return constructTree(vos, wrapper);
     }
 
     /**
@@ -75,7 +75,7 @@ public final class TreeUtilForAnnotation {
         if (null == vos || vos.isEmpty()) {
             return null;
         }
-        TreeNodeProxy<T> proxy = TreeNodeProxy.from(vos.get(0));
+        TreeNodeWrapperAnnotation<T> proxy = TreeNodeWrapperAnnotation.from(vos.get(0));
         return constructTreeForTemp(vos, proxy).get(id);
     }
 
@@ -101,7 +101,7 @@ public final class TreeUtilForAnnotation {
         if (null == vos || vos.isEmpty()) {
             return Collections.emptyList();
         }
-        TreeNodeProxy<T> proxy = TreeNodeProxy.from(vos.get(0));
+        TreeNodeWrapperAnnotation<T> proxy = TreeNodeWrapperAnnotation.from(vos.get(0));
         List<T> maybeRoots = constructTree(vos, proxy);
         List<T> result = new ArrayList<>();
         for (T root : maybeRoots) {
@@ -128,7 +128,7 @@ public final class TreeUtilForAnnotation {
      * @param <T> 树节点
      * @return 返回无父节点的节点
      */
-    private static <T> List<T> constructTree(List<T> vos, TreeNodeProxy<T> proxy) {
+    private static <T> List<T> constructTree(List<T> vos, TreeNodeWrapperAnnotation<T> proxy) {
         if (null == vos || vos.isEmpty()) {
             return Collections.emptyList();
         }
@@ -153,7 +153,7 @@ public final class TreeUtilForAnnotation {
      * @param <T> 树节点
      * @return 返回无父节点的节点
      */
-    private static <T> Map<String, T> constructTreeForTemp(List<T> vos, TreeNodeProxy<T> proxy) {
+    private static <T> Map<String, T> constructTreeForTemp(List<T> vos, TreeNodeWrapperAnnotation<T> proxy) {
         if (null == vos || vos.isEmpty()) {
             return Collections.emptyMap();
         }
@@ -175,7 +175,7 @@ public final class TreeUtilForAnnotation {
             if (null == brothers || brothers.isEmpty()) {
                 brothers = new ArrayList<>();
                 brothers.add(vo);
-                proxy.setChildren(father, brothers);
+                proxy.setChildren(brothers, father);
             } else {
                 brothers.add(vo);
             }
@@ -195,7 +195,7 @@ public final class TreeUtilForAnnotation {
     public static <T> List<T> constructTreeForSpecifyNode(
             List<T> treeNodes, List<String> ids, String rootId) {
         // 构造节点映射对象
-        TreeNodeProxy<T> proxy = TreeNodeProxy.from(treeNodes.get(0));
+        TreeNodeWrapperAnnotation<T> proxy = TreeNodeWrapperAnnotation.from(treeNodes.get(0));
         Map<String, T> temp = constructTempMap(treeNodes, proxy);
         // 构造队列
         Queue<T> queue = initQueue(ids, temp);
@@ -207,7 +207,7 @@ public final class TreeUtilForAnnotation {
 
 
     // 构造节点映射对象
-    private static <T> Map<String, T> constructTempMap(List<T> treeNodes, TreeNodeProxy<T> proxy) {
+    private static <T> Map<String, T> constructTempMap(List<T> treeNodes, TreeNodeWrapperAnnotation<T> proxy) {
         Map<String, T> temp = new HashMap<>(treeNodes.size());
         for (T treeNode : treeNodes) {
             temp.put(proxy.getId(treeNode), treeNode);
@@ -216,7 +216,7 @@ public final class TreeUtilForAnnotation {
     }
 
     // 拼接树
-    private static <T> void jointTree(Map<String, T> temp, Queue<T> queue, TreeNodeProxy<T> proxy) {
+    private static <T> void jointTree(Map<String, T> temp, Queue<T> queue, TreeNodeWrapperAnnotation<T> proxy) {
         while (!queue.isEmpty()) {
             T curNode = queue.poll();
             // 1. 把自己的父亲节点放入队列
@@ -232,7 +232,7 @@ public final class TreeUtilForAnnotation {
             List<T> curBrothers = proxy.getChildren(parent);
             if (null == curBrothers) {
                 curBrothers = new ArrayList<>();
-                proxy.setChildren(parent, curBrothers);
+                proxy.setChildren(curBrothers, parent);
             }
             if (notContainsNode(curBrothers, curNode, proxy)) {
                 curBrothers.add(curNode);
@@ -255,7 +255,7 @@ public final class TreeUtilForAnnotation {
 
     // 获取根节点
     private static <T> List<T> getRootNode(
-            List<T> treeNodes, String rootId, Map<String, T> temp, TreeNodeProxy<T> proxy) {
+            List<T> treeNodes, String rootId, Map<String, T> temp, TreeNodeWrapperAnnotation<T> proxy) {
         T root = temp.get(rootId);
         if (null != root) {
             return Collections.singletonList(temp.get(rootId));
@@ -264,7 +264,7 @@ public final class TreeUtilForAnnotation {
     }
 
     // 获取所有根节点
-    private static <T> List<T> findAllRoot(List<T> treeNodes, String rootId, TreeNodeProxy<T> proxy) {
+    private static <T> List<T> findAllRoot(List<T> treeNodes, String rootId, TreeNodeWrapperAnnotation<T> proxy) {
         List<T> roots = new ArrayList<>();
         for (T treeNode : treeNodes) {
             if (null != proxy.getPId(treeNode) && proxy.getPId(treeNode).equals(rootId) &&
@@ -282,7 +282,7 @@ public final class TreeUtilForAnnotation {
      * @param treeNode 树节点
      * @return 是否包含
      */
-    private static <T> boolean notContainsNode(List<T> origin, T treeNode, TreeNodeProxy<T> proxy) {
+    private static <T> boolean notContainsNode(List<T> origin, T treeNode, TreeNodeWrapperAnnotation<T> proxy) {
         for (T node : origin) {
             if (proxy.getId(node).equals(proxy.getId(treeNode))) {
                 return false;

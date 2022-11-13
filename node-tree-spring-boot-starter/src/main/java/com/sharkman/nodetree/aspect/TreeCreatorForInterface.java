@@ -46,6 +46,6 @@ final class TreeCreatorForInterface implements TreeCreator {
     @SuppressWarnings("unchecked") // 方法包内可见，保证转化成功
     public List<Object> buildTree(List<Object> vos) {
         List<Treeable> actualObj = (List<Treeable>) (Object) vos;
-        return (List<Object>) (Object) TreeUtil.constructTree(actualObj);
+        return (List<Object>) (Object) TreeUtil.buildTree(actualObj);
     }
 }
