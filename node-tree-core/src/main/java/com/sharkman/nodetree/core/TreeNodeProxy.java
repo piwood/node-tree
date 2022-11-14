@@ -1,5 +1,6 @@
 package com.sharkman.nodetree.core;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +16,7 @@ import java.util.stream.Collectors;
 public class TreeNodeProxy<T> {
     private final T origin;
     private final TreeNodeWrapper<T> wrapper;
+    private List<TreeNodeProxy<T>> children;
 
     /**
      * 构造函数
@@ -78,6 +80,24 @@ public class TreeNodeProxy<T> {
     }
 
     /**
+     * 添加子节点
+     *
+     * @param child 子节点
+     */
+    public void addChild(TreeNodeProxy<T> child) {
+        List<T> origins = getChildren();
+        if (null == this.children) {
+            this.children = new ArrayList<>();
+            if (null == origins) {
+                origins = new ArrayList<>();
+                setChildren(origins);
+            }
+        }
+        this.children.add(child);
+        origins.add(child.getOrigin());
+    }
+
+    /**
      * 获取孩子节点
      *
      * @return 孩子节点
@@ -95,11 +115,20 @@ public class TreeNodeProxy<T> {
         wrapper.setChildren(children, origin);
     }
 
-
+    /**
+     * 返回原始对象
+     *
+     * @return 原始对象
+     */
     T getOrigin() {
         return origin;
     }
 
+    /**
+     * 获取包装类
+     *
+     * @return 包装类
+     */
     TreeNodeWrapper<T> getWrapper() {
         return wrapper;
     }
