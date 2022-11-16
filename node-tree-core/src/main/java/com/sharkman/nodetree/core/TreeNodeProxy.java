@@ -62,6 +62,38 @@ public class TreeNodeProxy<T> {
     }
 
     /**
+     * 构造一个代理节点
+     *
+     * @param list 原对象
+     * @param <T>  节点类型
+     * @return 代理节点
+     */
+    public static <T> List<TreeNodeProxy<T>> ofList(List<T> list) {
+        if (null == list || list.isEmpty()) {
+            return Collections.emptyList();
+        }
+        T t = list.get(0);
+        return TreeNodeProxy.ofList(list, createNodeWrapper(t));
+    }
+
+    /**
+     * 创建包装器
+     *
+     * @param t   节点
+     * @param <T> 节点对象
+     * @return 包装器
+     */
+    public static <T> TreeNodeWrapper<T> createNodeWrapper(T t) {
+        TreeNodeWrapper<T> wrapper;
+        if (t instanceof Treeable) {
+            wrapper = new TreeNodeWrapperInterface<>();
+        } else {
+            wrapper = TreeNodeWrapperAnnotation.from(t);
+        }
+        return wrapper;
+    }
+
+    /**
      * 取 id
      *
      * @return id

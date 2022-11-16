@@ -163,19 +163,19 @@ final class TreeCoreConstructor {
      * @param <T> 树节点
      * @return 返回无父节点的节点
      */
-    static <T> List<T> constructTree(List<TreeNodeProxy<T>> vos) {
+    static <T> List<TreeNodeProxy<T>> constructTree(List<TreeNodeProxy<T>> vos) {
         if (null == vos || vos.isEmpty()) {
             return Collections.emptyList();
         }
         // 可能为根节点的
-        List<T> maybeRoots = new ArrayList<>();
+        List<TreeNodeProxy<T>> maybeRoots = new ArrayList<>();
         Map<String, TreeNodeProxy<T>> temp = constructTreeForTemp(vos);
         // 构造树
         for (TreeNodeProxy<T> vo : vos) {
             TreeNodeProxy<T> father = temp.get(vo.getPId());
             // 没有父节点的，则为疑似父节点
             if (null == father || father == vo) {
-                maybeRoots.add(vo.getOrigin());
+                maybeRoots.add(vo);
             }
         }
         return maybeRoots;

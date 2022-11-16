@@ -3,10 +3,7 @@ package com.sharkman.nodetree.core;
 import lombok.NonNull;
 import org.apache.commons.collections4.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -35,7 +32,7 @@ public final class TreeUtil {
      * @param predicate 判别式，为true则为根节点
      * @return 根节点
      */
-    public static <T extends Treeable> T buildTree(List<T> vos, @NonNull Predicate<T> predicate) {
+    public static <T> T buildTree(List<T> vos, @NonNull Predicate<T> predicate) {
         List<T> result = buildTreeForList(vos, predicate);
         if (result.isEmpty()) {
             return null;
@@ -47,26 +44,40 @@ public final class TreeUtil {
      * 构建树形结构，并返回所有根节点
      * <p>传入一个 Predicate 对想来判别根节点，若节点满足此条件，则设置为根节点。</p>
      *
-     * @param vos       所有节点数据
+     * @param nodes     所有节点数据
      * @param predicate 判别式，为true则为根节点
      * @return 所有根节点
      */
-    public static <T extends Treeable> List<T> buildTreeForList(List<T> vos, @NonNull Predicate<T> predicate) {
-        List<T> maybeRoots = buildTree(vos);
+    static <T> List<T> buildTreeForListProxy(
+            List<TreeNodeProxy<T>> nodes, @NonNull Predicate<TreeNodeProxy<T>> predicate) {
+        List<TreeNodeProxy<T>> maybeRoots = TreeCoreConstructor.constructTree(nodes);
         // 从疑似父节点中查找真正的父节点
         List<T> roots = new ArrayList<>();
-        for (T vo : maybeRoots) {
+        for (TreeNodeProxy<T> vo : maybeRoots) {
             if (predicate.test(vo)) {
-                roots.add(vo);
+                roots.add(vo.getOrigin());
             }
         }
         // 没找到，可能为子树，整体过滤
         if (CollectionUtils.isEmpty(roots)) {
-            roots = vos.stream()
+            roots = nodes.stream()
                     .filter(predicate)
+                    .map(TreeNodeProxy::getOrigin)
                     .collect(Collectors.toList());
         }
         return roots;
+    }
+
+    /**
+     * 构建树形结构，并返回所有根节点
+     * <p>传入一个 Predicate 对想来判别根节点，若节点满足此条件，则设置为根节点。</p>
+     *
+     * @param vos       所有节点数据
+     * @param predicate 判别式，为true则为根节点
+     * @return 所有根节点
+     */
+    public static <T> List<T> buildTreeForList(List<T> vos, @NonNull Predicate<T> predicate) {
+        return buildTreeForListProxy(TreeNodeProxy.ofList(vos), n -> predicate.test(n.getOrigin()));
     }
 
     /**
@@ -76,42 +87,54 @@ public final class TreeUtil {
      * @param id  指定根节点的id，不可为null
      * @return 根节点
      */
-    public static <T extends Treeable> T buildTreeOfRootId(List<T> vos, String id) {
+    public static <T> T buildTreeOfRootId(List<T> vos, String id) {
         if (null == id) {
             throw new IllegalArgumentException("构建树失败！根节点id不能为空！");
         }
-        return constructTreeForTemp(ofListForInterface(vos)).get(id).getOrigin();
+        return constructTreeForTemp(TreeNodeProxy.ofList(vos)).get(id).getOrigin();
     }
 
     /**
      * 构建树形结构，并返回根节点
+     * 使用{@link Objects#equals(Object, Object)} 判断是否相等
      *
-     * @param vos 所有节点数据
-     * @param pid 指定根节点的父id， 可为 null
+     * @param nodes 所有节点数据
+     * @param pid   指定根节点的父id， 可为 null;
      * @return 根节点
      */
-    public static <T extends Treeable> T buildTreeOfRootPId(List<T> vos, String pid) {
-        return buildTree(vos, vo -> Objects.equals(vo.getPId(), pid));
+    public static <T> T buildTreeOfRootPId(List<T> nodes, String pid) {
+        return Optional.ofNullable(buildTreeOfRootPIdForList(nodes, pid))
+                .map(l -> l.get(0)).orElse(null);
     }
 
     /**
      * 构建树形结构，并返回所有根节点
      *
-     * @param vos 所有节点数据
-     * @param pid 指定根节点的父id， 可为 null
+     * @param nodes 所有节点数据
+     * @param pid   指定根节点的父id， 可为 null
      * @return 所有根节点
      */
-    public static <T extends Treeable> List<T> buildTreeOfRootPIdForList(List<T> vos, String pid) {
-        return buildTreeForList(vos, vo -> Objects.equals(vo.getPId(), pid));
+    public static <T> List<T> buildTreeOfRootPIdForList(List<T> nodes, String pid) {
+        if (null == nodes || nodes.isEmpty()) {
+            return null;
+        }
+        TreeNodeWrapper<T> wrapper = TreeNodeProxy.createNodeWrapper(nodes.get(0));
+        List<T> result =
+                buildTreeForListProxy(TreeNodeProxy.ofList(nodes, wrapper), n -> Objects.equals(n.getPId(), pid));
+        if (result.isEmpty()) {
+            return null;
+        }
+        return result;
     }
 
     /**
      * 计算树上有多少个节点
+     *
      * @param trees 数结构
      * @return 节点数量
      */
-    public static <T extends Treeable> int countNodes(List<T> trees) {
-        return TreeCoreConstructor.countNodes(ofListForInterface(trees));
+    public static <T> int countNodes(List<T> trees) {
+        return TreeCoreConstructor.countNodes(TreeNodeProxy.ofList(trees));
     }
 
     /**
@@ -122,9 +145,9 @@ public final class TreeUtil {
      * @param rootId    子树根节点id
      * @return 组织机构根层节点
      */
-    public static <T extends Treeable> List<T> buildTreeForSpecifyNode(
+    public static <T> List<T> buildTreeForSpecifyNode(
             List<T> treeNodes, List<String> ids, String rootId) {
-        return TreeCoreConstructor.constructTreeForSpecifyNode(ofListForInterface(treeNodes), ids, rootId);
+        return TreeCoreConstructor.constructTreeForSpecifyNode(TreeNodeProxy.ofList(treeNodes), ids, rootId);
     }
 
     /**
@@ -134,37 +157,13 @@ public final class TreeUtil {
      * @param <T> 树节点
      * @return 返回无父节点的节点
      */
-    public static <T extends Treeable> List<T> buildTree(List<T> vos) {
-        return TreeCoreConstructor.constructTree(ofListForInterface(vos));
-    }
-
-    /**
-     * 构造一个代理节点
-     *
-     * @param t   原对象
-     * @param <T> 节点类型
-     * @return 代理节点
-     */
-    public static <T extends Treeable> List<TreeNodeProxy<T>> ofListForInterface(List<T> t) {
-        if (null == t || t.isEmpty()) {
+    public static <T> List<T> buildTree(List<T> vos) {
+        List<TreeNodeProxy<T>> result = TreeCoreConstructor.constructTree(TreeNodeProxy.ofList(vos));
+        if (result.isEmpty()) {
             return Collections.emptyList();
         }
-        TreeNodeWrapper<T> wrapper = new TreeNodeWrapperInterface<>();
-        return TreeNodeProxy.ofList(t, wrapper);
-    }
-
-    /**
-     * 构造一个代理节点
-     *
-     * @param t   原对象
-     * @param <T> 节点类型
-     * @return 代理节点
-     */
-    public static <T> List<TreeNodeProxy<T>> ofListForAnnotation(List<T> t) {
-        if (null == t || t.isEmpty()) {
-            return Collections.emptyList();
-        }
-        TreeNodeWrapper<T> wrapper = TreeNodeWrapperAnnotation.from(t.get(0));
-        return TreeNodeProxy.ofList(t, wrapper);
+        return result.stream()
+                .map(TreeNodeProxy::getOrigin)
+                .collect(Collectors.toList());
     }
 }

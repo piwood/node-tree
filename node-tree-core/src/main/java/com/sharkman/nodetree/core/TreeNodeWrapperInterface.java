@@ -11,7 +11,7 @@ import java.util.List;
  * @version 1.0
  * @since 1.0
  */
-final class TreeNodeWrapperInterface<T extends Treeable> implements TreeNodeWrapper<T> {
+final class TreeNodeWrapperInterface<T> implements TreeNodeWrapper<T> {
 
     /**
      * 获取树节点 id
@@ -21,7 +21,7 @@ final class TreeNodeWrapperInterface<T extends Treeable> implements TreeNodeWrap
      */
     @Override
     public String getId(T targetObj) {
-        return targetObj.getId();
+        return ((Treeable) targetObj).getId();
     }
 
     /**
@@ -32,7 +32,7 @@ final class TreeNodeWrapperInterface<T extends Treeable> implements TreeNodeWrap
      */
     @Override
     public String getPId(T targetObj) {
-        return targetObj.getPId();
+        return ((Treeable) targetObj).getPId();
     }
 
     /**
@@ -43,7 +43,7 @@ final class TreeNodeWrapperInterface<T extends Treeable> implements TreeNodeWrap
      */
     @Override
     public List<T> getChildren(T targetObj) {
-        return (List<T>) targetObj.getChildren();
+        return (List<T>) ((Treeable) targetObj).getChildren();
     }
 
     /**
@@ -54,6 +54,6 @@ final class TreeNodeWrapperInterface<T extends Treeable> implements TreeNodeWrap
      */
     @Override
     public void setChildren(List<T> children, T targetObj) {
-        targetObj.setChildren((List<Treeable>) children);
+        ((Treeable) targetObj).setChildren((List<Treeable>) children);
     }
 }
