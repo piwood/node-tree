@@ -6,7 +6,6 @@ import com.sharkman.nodetree.annotation.NodePID;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,7 +117,7 @@ final class TreeNodeWrapperAnnotation<T> implements TreeNodeWrapper<T> {
     public List<T> getChildren(T targetObj) {
         Object children = methodInvoke(childrenGetter, targetObj);
         if (null == children) {
-            return Collections.emptyList();
+            return null;
         }
         if (!(children instanceof List)) {
             throw new IllegalStateException("children 为非List!转化失败, 获取 children 信息失败");

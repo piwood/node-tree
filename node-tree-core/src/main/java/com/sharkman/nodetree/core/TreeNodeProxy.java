@@ -117,12 +117,12 @@ public class TreeNodeProxy<T> {
      * @param child 子节点
      */
     public void addChild(TreeNodeProxy<T> child) {
-        List<T> origins = getChildren();
+        List<T> origins = wrapper.getChildren(origin);
         if (null == this.children) {
             this.children = new ArrayList<>();
             if (null == origins) {
                 origins = new ArrayList<>();
-                setChildren(origins);
+                wrapper.setChildren(origins, origin);
             }
         }
         this.children.add(child);
@@ -134,8 +134,8 @@ public class TreeNodeProxy<T> {
      *
      * @return 孩子节点
      */
-    public List<T> getChildren() {
-        return wrapper.getChildren(origin);
+    public List<TreeNodeProxy<T>> getChildren() {
+        return this.children;
     }
 
     /**
@@ -143,8 +143,8 @@ public class TreeNodeProxy<T> {
      *
      * @param children 孩子节点
      */
-    public void setChildren(List<T> children) {
-        wrapper.setChildren(children, origin);
+    public void setChildren(List<TreeNodeProxy<T>> children) {
+        this.children = children;
     }
 
     /**

@@ -128,16 +128,6 @@ public final class TreeUtil {
     }
 
     /**
-     * 计算树上有多少个节点
-     *
-     * @param trees 数结构
-     * @return 节点数量
-     */
-    public static <T> int countNodes(List<T> trees) {
-        return TreeCoreConstructor.countNodes(TreeNodeProxy.ofList(trees));
-    }
-
-    /**
      * 根据权限反向构造树结构
      *
      * @param treeNodes 组织机构树

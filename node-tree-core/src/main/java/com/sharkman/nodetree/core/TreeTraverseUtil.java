@@ -114,4 +114,17 @@ public final class TreeTraverseUtil {
             }
         }
     }
+
+    /**
+     * 计算树上有多少个节点
+     *
+     * @param trees 数结构
+     * @return 节点数量
+     */
+    public static <T> int countNodes(List<T> trees) {
+        if (null == trees || trees.isEmpty()) {
+            return 0;
+        }
+        return TreeCoreConstructor.countNodes(trees, TreeNodeProxy.createNodeWrapper(trees.get(0)));
+    }
 }

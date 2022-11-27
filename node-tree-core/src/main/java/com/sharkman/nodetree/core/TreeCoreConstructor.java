@@ -14,7 +14,6 @@ final class TreeCoreConstructor {
     private TreeCoreConstructor() {
     }
 
-
     // 构造节点映射对象
     private static <T> Map<String, TreeNodeProxy<T>> constructTempMap(List<TreeNodeProxy<T>> treeNodes) {
         Map<String, TreeNodeProxy<T>> temp = new HashMap<>(treeNodes.size());
@@ -38,13 +37,9 @@ final class TreeCoreConstructor {
             }
             queue.add(parent);
             // 2. 把自己与父亲节点关联起来
-            List<T> curBrothers = parent.getChildren();
-            if (null == curBrothers) {
-                curBrothers = new ArrayList<>();
-                parent.setChildren(curBrothers);
-            }
+            List<TreeNodeProxy<T>> curBrothers = parent.getChildren();
             if (notContainsNode(curBrothers, curNode)) {
-                curBrothers.add(curNode.getOrigin());
+                parent.addChild(curNode);
             }
         }
     }
@@ -91,15 +86,14 @@ final class TreeCoreConstructor {
      * @param treeNode 树节点
      * @return 是否包含
      */
-    private static <T> boolean notContainsNode(List<T> origin, TreeNodeProxy<T> treeNode) {
-        for (T node : origin) {
-            if (treeNode.getWrapper().getId(node).equals(treeNode.getId())) {
+    private static <T> boolean notContainsNode(List<TreeNodeProxy<T>> origin, TreeNodeProxy<T> treeNode) {
+        for (TreeNodeProxy<T> node : origin) {
+            if (node.getId().equals(treeNode.getId())) {
                 return false;
             }
         }
         return true;
     }
-
 
     /**
      * 构造树核心方法
@@ -125,16 +119,10 @@ final class TreeCoreConstructor {
             if (null == father || father == vo) {
                 continue;
             }
-            List<T> brothers = father.getChildren();
-            if (null == brothers) {
-                brothers = new ArrayList<>();
-                father.setChildren(brothers);
-            }
-            brothers.add(vo.getOrigin());
+            father.addChild(vo);
         }
         return temp;
     }
-
 
     /**
      * 根据权限反向构造树结构
@@ -187,24 +175,20 @@ final class TreeCoreConstructor {
      * @param trees 数结构
      * @return 节点数量
      */
-    static <T> int countNodes(List<TreeNodeProxy<T>> trees) {
+    static <T> int countNodes(List<T> trees, TreeNodeWrapper<T> wrapper) {
         if (null == trees || trees.isEmpty()) {
             return 0;
         }
-        Queue<TreeNodeProxy<T>> queue = new LinkedList<>(trees);
+        Queue<T> queue = new LinkedList<>(trees);
         int count = 0;
         while (!queue.isEmpty()) {
-            TreeNodeProxy<T> current = queue.poll();
+            T current = queue.poll();
             count++;
-
-            List<T> children;
-            if (null == current || null == current.getChildren()) {
-                children = Collections.emptyList();
-            } else {
-                children = current.getChildren();
-            }
-            if (!children.isEmpty()) {
-                queue.addAll(TreeNodeProxy.ofList(children, current.getWrapper()));
+            if (null != current) {
+                List<T> children = wrapper.getChildren(current);
+                if (null != children) {
+                    queue.addAll(children);
+                }
             }
         }
         return count;

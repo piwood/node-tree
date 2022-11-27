@@ -37,22 +37,26 @@ final class TreeNodeWrapperInterface<T> implements TreeNodeWrapper<T> {
 
     /**
      * 获取子节点
+     * 调用需客户端保证节点类型为 {@link Treeable} 子类
      *
      * @param targetObj 目标对象
      * @return 孩子节点
      */
     @Override
+    @SuppressWarnings("unchecked")
     public List<T> getChildren(T targetObj) {
         return (List<T>) ((Treeable) targetObj).getChildren();
     }
 
     /**
      * 设置子节点信息
+     * 调用需客户端保证节点类型为 {@link Treeable} 子类
      *
      * @param targetObj 目标对象
      * @param children  子节点信息
      */
     @Override
+    @SuppressWarnings("unchecked")
     public void setChildren(List<T> children, T targetObj) {
         ((Treeable) targetObj).setChildren((List<Treeable>) children);
     }
