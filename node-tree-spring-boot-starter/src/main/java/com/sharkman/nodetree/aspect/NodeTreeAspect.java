@@ -4,7 +4,6 @@ import com.sharkman.nodetree.annotation.NodeTree;
 import com.sharkman.nodetree.annotation.RootID;
 import com.sharkman.nodetree.annotation.RootPID;
 import com.sharkman.nodetree.core.ReflectUtil;
-import com.sharkman.nodetree.core.Treeable;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -52,14 +51,8 @@ public class NodeTreeAspect {
         if (returnList.isEmpty()) {
             return returnValue;
         }
-        Object childNode = returnList.get(0);
-        TreeCreator creator;
-        // 如果实现了 Treeable 接口
-        if (childNode instanceof Treeable) {
-            creator = TreeCreatorForInterface.getInstance();
-        } else {
-            creator = TreeCreatorForAnnotation.getInstance();
-        }
+        // 扩展点，可自定义树构造器，增加额外的行为
+        TreeCreator creator = DefaultTreeCreator.getInstance();
         // 首先查看 NodeTree 节点本身是否传入了固定值
         JudgeReturnResult returnResult = judgeOfNodeTypeValue(returnList, nodeTree, creator);
         if (returnResult.find) {

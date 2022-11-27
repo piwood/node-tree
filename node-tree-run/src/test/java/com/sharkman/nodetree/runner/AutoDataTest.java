@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
-import static com.sharkman.nodetree.core.TreeUtil.countNodes;
+import static com.sharkman.nodetree.core.TreeTraverseUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

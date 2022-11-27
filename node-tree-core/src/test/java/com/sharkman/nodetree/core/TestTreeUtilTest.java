@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static com.sharkman.nodetree.core.TreeUtil.countNodes;
+import static com.sharkman.nodetree.core.TreeTraverseUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TestTreeUtilTest {
@@ -117,8 +117,8 @@ class TestTree implements Treeable {
         this.pId = pId;
     }
 
-    private String id;
-    private String pId;
+    private final String id;
+    private final String pId;
     private List<Treeable> children;
 
     @Override

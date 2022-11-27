@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p> Description:数节点注解</p>
+ * <p> Description:树节点注解</p>
  * <p> CreationTime: 2020/10/9 11:31
  * <br>Copyright: &copy;2020 <a href="http://www.sharkman.com">Sharkman</a>
  * <br>Email: <a href="mailto:526478642@qq.com">526478642@qq.com</a></p>
