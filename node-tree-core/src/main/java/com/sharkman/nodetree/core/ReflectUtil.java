@@ -31,7 +31,8 @@ public final class ReflectUtil {
     private static final String STR_SET = "set";
 
 
-    private ReflectUtil() {
+    private ReflectUtil() throws IllegalAccessException {
+        throw new IllegalAccessException("非法访问构造函数");
     }
 
     /**

@@ -11,7 +11,8 @@ import java.util.*;
  * @since 1.0
  */
 final class TreeCoreConstructor {
-    private TreeCoreConstructor() {
+    private TreeCoreConstructor() throws IllegalAccessException {
+        throw new IllegalAccessException("非法访问构造函数");
     }
 
     // 构造节点映射对象
@@ -80,7 +81,7 @@ final class TreeCoreConstructor {
     }
 
     /**
-     * 包含
+     * 不包含节点
      *
      * @param origin   原始 list
      * @param treeNode 树节点

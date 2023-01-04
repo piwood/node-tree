@@ -16,7 +16,8 @@ import java.util.function.Predicate;
  * @since 1.1.2
  */
 public final class TreeTraverseUtil {
-    private TreeTraverseUtil() {
+    private TreeTraverseUtil() throws IllegalAccessException {
+        throw new IllegalAccessException("非法访问构造函数");
     }
 
     /**
