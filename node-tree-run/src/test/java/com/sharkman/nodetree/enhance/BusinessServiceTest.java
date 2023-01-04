@@ -1,6 +1,6 @@
 package com.sharkman.nodetree.enhance;
 
-import com.sharkman.nodetree.core.TreeUtil;
+import com.sharkman.nodetree.core.TreeTraverseUtil;
 import com.sharkman.nodetree.core.Treeable;
 import com.sharkman.nodetree.runner.CommonTreeNode;
 import lombok.RequiredArgsConstructor;
@@ -32,14 +32,14 @@ class BusinessServiceTest {
         assertNotNull(result);
 
         assertEquals(1, result.size());
-        assertEquals(nodesCount, TreeUtil.countNodes(result));
+        assertEquals(nodesCount, TreeTraverseUtil.countNodes(result));
 
         // ------------
         result = businessService.findAllNodes(nodesCount, "-");
         assertNotNull(result);
 
         assertEquals(1, result.size());
-        assertEquals(nodesCount, TreeUtil.countNodes(result));
+        assertEquals(nodesCount, TreeTraverseUtil.countNodes(result));
 
         // ------- 对象
         ParamsOfPid pid = new ParamsOfPid();
@@ -48,7 +48,7 @@ class BusinessServiceTest {
         assertNotNull(result);
 
         assertEquals(1, result.size());
-        assertEquals(nodesCount, TreeUtil.countNodes(result));
+        assertEquals(nodesCount, TreeTraverseUtil.countNodes(result));
 
         // ------- 不指定
         result = businessService.findAllNodesNoSign(nodesCount, "-");
@@ -56,7 +56,7 @@ class BusinessServiceTest {
         assertNotNull(result);
 
         assertEquals(2, result.size());
-        assertEquals(nodesCount + 1, TreeUtil.countNodes(result));
+        assertEquals(nodesCount + 1, TreeTraverseUtil.countNodes(result));
     }
 
     /**
@@ -69,14 +69,14 @@ class BusinessServiceTest {
         assertNotNull(result);
 
         assertEquals(1, result.size());
-        assertEquals(nodesCount, TreeUtil.countNodes(result));
+        assertEquals(nodesCount, TreeTraverseUtil.countNodes(result));
 
         // ------------ 注解
         result = businessService.findSpecNodes(nodesCount, "0");
         assertNotNull(result);
 
         assertEquals(1, result.size());
-        assertEquals(nodesCount, TreeUtil.countNodes(result));
+        assertEquals(nodesCount, TreeTraverseUtil.countNodes(result));
 
         // ------- 对象
         ParamsOfID id = new ParamsOfID();
@@ -85,7 +85,7 @@ class BusinessServiceTest {
         assertNotNull(result);
 
         assertEquals(1, result.size());
-        assertEquals(nodesCount, TreeUtil.countNodes(result));
+        assertEquals(nodesCount, TreeTraverseUtil.countNodes(result));
 
     }
 

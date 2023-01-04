@@ -1,6 +1,6 @@
 package com.sharkman.nodetree.aspect;
 
-import com.sharkman.nodetree.core.TreeUtilForAnnotation;
+import com.sharkman.nodetree.core.TreeUtil;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ import java.util.List;
  * @version 1.0
  * @since 1.1.4
  */
-final class TreeCreatorForAnnotation implements TreeCreator {
-    private TreeCreatorForAnnotation() {
+final class DefaultTreeCreator implements TreeCreator {
+    private DefaultTreeCreator() {
     }
 
-    private static final TreeCreatorForAnnotation INSTANCE = new TreeCreatorForAnnotation();
+    private static final DefaultTreeCreator INSTANCE = new DefaultTreeCreator();
 
     /**
      * 获取实例
@@ -29,16 +29,16 @@ final class TreeCreatorForAnnotation implements TreeCreator {
 
     @Override
     public Object buildTreeOfRootId(List<Object> vos, String id) {
-        return TreeUtilForAnnotation.buildTreeOfRootId(vos, id);
+        return TreeUtil.buildTreeOfRootId(vos, id);
     }
 
     @Override
     public List<Object> buildTreeOfRootPIdForList(List<Object> vos, String pid) {
-        return TreeUtilForAnnotation.buildTreeOfRootPIdForList(vos, pid);
+        return TreeUtil.buildTreeOfRootPIdForList(vos, pid);
     }
 
     @Override
     public List<Object> buildTree(List<Object> vos) {
-        return TreeUtilForAnnotation.buildTree(vos);
+        return TreeUtil.buildTree(vos);
     }
 }

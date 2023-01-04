@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
-import static com.sharkman.nodetree.core.TreeUtil.countNodes;
+import static com.sharkman.nodetree.core.TreeTraverseUtil.countNodes;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

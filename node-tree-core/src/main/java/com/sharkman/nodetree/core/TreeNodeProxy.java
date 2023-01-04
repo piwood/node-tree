@@ -1,138 +1,167 @@
 package com.sharkman.nodetree.core;
 
-import com.sharkman.nodetree.annotation.NodeChildren;
-import com.sharkman.nodetree.annotation.NodeID;
-import com.sharkman.nodetree.annotation.NodePID;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-
-import static com.sharkman.nodetree.core.ReflectUtil.*;
+import java.util.stream.Collectors;
 
 /**
- * <p> Description:树节点反射代理</p>
- * <p> CreationTime: 2021/5/6 18:02
- * <br>Email: <a href="mailto:526478642@qq.com">526478642@qq.com</a></p>
+ * <p> Description:树节点代理</p>
+ * <p> CreationTime: 2022/11/11 12:39 PM
  *
- * @author yanpengyu
+ * @author Piwood
  * @version 1.0
  * @since 1.0
  */
-final class TreeNodeProxy<T> {
-    private final Method nodeIdGetter;
-    private final Method pidGetter;
-    private final Method childrenGetter;
-    private final Method childrenSetter;
+public class TreeNodeProxy<T> {
+    private final T origin;
+    private final TreeNodeWrapper<T> wrapper;
+    private List<TreeNodeProxy<T>> children;
 
-
-    private TreeNodeProxy(Method nodeIdGetter,
-                          Method pidGetter,
-                          Method childrenGetter,
-                          Method childrenSetter) {
-        this.nodeIdGetter = nodeIdGetter;
-        this.pidGetter = pidGetter;
-        this.childrenGetter = childrenGetter;
-        this.childrenSetter = childrenSetter;
-    }
-
-    static <U> TreeNodeProxy<U> from(U obj) {
-        Class<?> clazz = obj.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-
-        Field field = ReflectUtil.findColumnByAnnotation(fields, NodeID.class);
-        if (null == field) {
-            throw new IllegalArgumentException(filedNotFoundMessageByAnnotation(NodeID.class.getName()));
-        }
-        Method nodeIdGetter;
-        try {
-            nodeIdGetter = ReflectUtil.refGetMethod(clazz, field.getName());
-        } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException(
-                    methodNotFoundByAnnotationMessage(NodeID.class.getName(), field), e);
-        }
-
-        field = ReflectUtil.findColumnByAnnotation(fields, NodePID.class);
-        if (null == field) {
-            throw new IllegalArgumentException(filedNotFoundMessageByAnnotation(NodePID.class.getName()));
-        }
-        Method pidGetter;
-        try {
-            pidGetter = ReflectUtil.refGetMethod(clazz, field.getName());
-        } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException(
-                    methodNotFoundByAnnotationMessage(NodePID.class.getName(), field), e);
-        }
-
-        field = ReflectUtil.findColumnByAnnotation(fields, NodeChildren.class);
-        if (null == field) {
-            throw new IllegalArgumentException(filedNotFoundMessageByAnnotation(NodeChildren.class.getName()));
-        }
-        Method childrenGetter;
-        Method childrenSetter;
-        try {
-            childrenGetter = ReflectUtil.refGetMethod(clazz, field.getName());
-            childrenSetter = ReflectUtil.refSetMethod(clazz, field.getName(), List.class);
-        } catch (NoSuchMethodException e) {
-            throw new IllegalArgumentException(
-                    methodNotFoundByAnnotationMessage(NodeChildren.class.getName(), field), e);
-        }
-        return new TreeNodeProxy<>(nodeIdGetter, pidGetter, childrenGetter, childrenSetter);
+    /**
+     * 构造函数
+     *
+     * @param origin  代理对象
+     * @param wrapper 包装器
+     */
+    public TreeNodeProxy(T origin, TreeNodeWrapper<T> wrapper) {
+        this.wrapper = wrapper;
+        this.origin = origin;
     }
 
     /**
-     * 获取树节点 id
+     * 构造一个代理节点
      *
-     * @param targetObj 目标对象
-     * @return 树节点 id
+     * @param t       原对象
+     * @param wrapper 节点包装器，用于读取属性注解
+     * @param <T>     节点类型
+     * @return 代理节点
      */
-    String getId(T targetObj) {
-        return Optional.ofNullable(methodInvoke(nodeIdGetter, targetObj))
-                .map(Object::toString)
-                .orElse(null);
+    public static <T> TreeNodeProxy<T> of(T t, TreeNodeWrapper<T> wrapper) {
+        if (null == wrapper) {
+            throw new IllegalArgumentException("包装器不能为空");
+        }
+        return new TreeNodeProxy<>(t, wrapper);
     }
 
     /**
-     * 获取树节点父节点 id
+     * 构造一个代理节点
      *
-     * @param targetObj 目标对象
-     * @return 父节点 id
+     * @param t       原对象
+     * @param wrapper 节点包装器，用于读取属性注解
+     * @param <T>     节点类型
+     * @return 代理节点
      */
-    String getPId(T targetObj) {
-        return Optional.ofNullable(methodInvoke(pidGetter, targetObj))
-                .map(Object::toString)
-                .orElse(null);
-    }
-
-    /**
-     * 获取子节点
-     *
-     * @param targetObj 目标对象
-     * @return 孩子节点
-     */
-    List<T> getChildren(T targetObj) {
-        Object children = methodInvoke(childrenGetter, targetObj);
-        if (null == children) {
+    public static <T> List<TreeNodeProxy<T>> ofList(List<T> t, TreeNodeWrapper<T> wrapper) {
+        if (null == t || t.isEmpty()) {
             return Collections.emptyList();
         }
-        if (!(children instanceof List)) {
-            throw new IllegalStateException("children 为非List!转化失败, 获取 children 信息失败");
-        }
-        @SuppressWarnings("unchecked")
-        List<T> result = (List<T>) children;
-        return result;
-
+        return t.stream()
+                .map(node -> TreeNodeProxy.of(node, wrapper))
+                .collect(Collectors.toList());
     }
 
     /**
-     * 设置子节点信息
+     * 构造一个代理节点
      *
-     * @param targetObj 目标对象
-     * @param children  子节点信息
+     * @param list 原对象
+     * @param <T>  节点类型
+     * @return 代理节点
      */
-    void setChildren(T targetObj, List<T> children) {
-        methodInvoke(childrenSetter, targetObj, children);
+    public static <T> List<TreeNodeProxy<T>> ofList(List<T> list) {
+        if (null == list || list.isEmpty()) {
+            return Collections.emptyList();
+        }
+        T t = list.get(0);
+        return TreeNodeProxy.ofList(list, createNodeWrapper(t));
+    }
+
+    /**
+     * 创建包装器
+     *
+     * @param t   节点
+     * @param <T> 节点对象
+     * @return 包装器
+     */
+    public static <T> TreeNodeWrapper<T> createNodeWrapper(T t) {
+        TreeNodeWrapper<T> wrapper;
+        if (t instanceof Treeable) {
+            wrapper = new TreeNodeWrapperInterface<>();
+        } else {
+            wrapper = TreeNodeWrapperAnnotation.from(t);
+        }
+        return wrapper;
+    }
+
+    /**
+     * 取 id
+     *
+     * @return id
+     */
+    public String getId() {
+        return wrapper.getId(origin);
+    }
+
+    /**
+     * 取 父id
+     *
+     * @return pid
+     */
+    public String getPId() {
+        return wrapper.getPId(origin);
+    }
+
+    /**
+     * 添加子节点
+     *
+     * @param child 子节点
+     */
+    public void addChild(TreeNodeProxy<T> child) {
+        List<T> origins = wrapper.getChildren(origin);
+        if (null == this.children) {
+            this.children = new ArrayList<>();
+            if (null == origins) {
+                origins = new ArrayList<>();
+                wrapper.setChildren(origins, origin);
+            }
+        }
+        this.children.add(child);
+        origins.add(child.getOrigin());
+    }
+
+    /**
+     * 获取孩子节点
+     *
+     * @return 孩子节点
+     */
+    public List<TreeNodeProxy<T>> getChildren() {
+        return this.children;
+    }
+
+    /**
+     * 设置孩子节点
+     *
+     * @param children 孩子节点
+     */
+    public void setChildren(List<TreeNodeProxy<T>> children) {
+        this.children = children;
+    }
+
+    /**
+     * 返回原始对象
+     *
+     * @return 原始对象
+     */
+    T getOrigin() {
+        return origin;
+    }
+
+    /**
+     * 获取包装类
+     *
+     * @return 包装类
+     */
+    TreeNodeWrapper<T> getWrapper() {
+        return wrapper;
     }
 }

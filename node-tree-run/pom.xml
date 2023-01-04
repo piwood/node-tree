@@ -51,7 +51,7 @@
         </dependency>
         <dependency>
             <groupId>com.sharkman</groupId>
-            <artifactId>node-tree-starter</artifactId>
+            <artifactId>node-tree-spring-boot-starter</artifactId>
         </dependency>
     </dependencies>
 

@@ -8,7 +8,7 @@
         <version>${revision}</version>
     </parent>
     <artifactId>node-tree-spring-boot-starter</artifactId>
-    <name>node-tree-starter</name>
+    <name>node-tree-spring-boot-starterr</name>
     <description>node-tree-注解形式starter</description>
     <dependencies>
         <dependency>
