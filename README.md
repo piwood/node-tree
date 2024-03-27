@@ -9,15 +9,15 @@ spring-boot 2.2.6.RELEASE
 
 #### 使用说明
 ##### 基于 NodeTree 注解返回值转化为属性结构
+
 1. 引入 node-tree-spring-boot-starter 包
 
   ```xml
-
-<dependency>
-  <groupId>com.sharkman</groupId>
-  <artifactId>node-tree-spring-boot-starter</artifactId>
-  <version>1.1.8</version>
-</dependency>
+  <dependency>
+      <groupId>com.sharkman</groupId>
+      <artifactId>node-tree-spring-boot-starter</artifactId>
+      <version>2.0.0</version>
+  </dependency>
   ```
 
 2. 创建树节点类
@@ -137,9 +137,9 @@ spring-boot 2.2.6.RELEASE
 1. 只需要引入 node-tree-core 包
   ```xml
   <dependency>
-    <groupId>com.sharkman</groupId>
-    <artifactId>node-tree-core</artifactId>
-    <version>1.1.5</version>
+      <groupId>com.sharkman</groupId>
+      <artifactId>node-tree-core</artifactId>
+      <version>2.0.0</version>
   </dependency>
   ```
 2. 创建树节点类，对象同上
