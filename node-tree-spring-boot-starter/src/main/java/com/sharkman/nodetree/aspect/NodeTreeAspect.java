@@ -167,7 +167,7 @@ public class NodeTreeAspect {
             }
             Class<?> clazz = param.getClass();
             // 找pid注解
-            Field field = ReflectUtil.findColumnByAnnotation(param.getClass().getDeclaredFields(), RootPID.class);
+            Field field = ReflectUtil.findColumnByAnnotation(param.getClass(), RootPID.class);
             if (null != field) {
                 Method rootPIDGetter;
                 try {
@@ -182,7 +182,7 @@ public class NodeTreeAspect {
                 ));
             }
             // 找id注解
-            field = ReflectUtil.findColumnByAnnotation(param.getClass().getDeclaredFields(), RootID.class);
+            field = ReflectUtil.findColumnByAnnotation(param.getClass(), RootID.class);
             if (null != field) {
                 Method rootIDGetter;
                 try {

@@ -39,8 +39,7 @@ final class TreeNodeWrapperAnnotation<T> implements TreeNodeWrapper<T> {
 
     static <T> TreeNodeWrapperAnnotation<T> from(T obj) {
         Class<?> clazz = obj.getClass();
-        Field[] fields = clazz.getDeclaredFields();
-        Field field = ReflectUtil.findColumnByAnnotation(fields, NodeID.class);
+        Field field = ReflectUtil.findColumnByAnnotation(clazz, NodeID.class);
         if (null == field) {
             throw new IllegalArgumentException(filedNotFoundMessageByAnnotation(NodeID.class.getName()));
         }
@@ -52,7 +51,7 @@ final class TreeNodeWrapperAnnotation<T> implements TreeNodeWrapper<T> {
                     methodNotFoundByAnnotationMessage(NodeID.class.getName(), field), e);
         }
 
-        field = ReflectUtil.findColumnByAnnotation(fields, NodePID.class);
+        field = ReflectUtil.findColumnByAnnotation(clazz, NodePID.class);
         if (null == field) {
             throw new IllegalArgumentException(filedNotFoundMessageByAnnotation(NodePID.class.getName()));
         }
@@ -64,7 +63,7 @@ final class TreeNodeWrapperAnnotation<T> implements TreeNodeWrapper<T> {
                     methodNotFoundByAnnotationMessage(NodePID.class.getName(), field), e);
         }
 
-        field = ReflectUtil.findColumnByAnnotation(fields, NodeChildren.class);
+        field = ReflectUtil.findColumnByAnnotation(clazz, NodeChildren.class);
         if (null == field) {
             throw new IllegalArgumentException(filedNotFoundMessageByAnnotation(NodeChildren.class.getName()));
         }
