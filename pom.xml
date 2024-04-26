@@ -15,7 +15,7 @@
         <relativePath/>
     </parent>
     <properties>
-        <revision>2.0.1</revision>
+        <revision>2.1.0</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <node.tree.core.version>${revision}</node.tree.core.version>
         <node.tree.annotation.version>${revision}</node.tree.annotation.version>

@@ -40,7 +40,6 @@ final class TreeNodeWrapperAnnotation<T> implements TreeNodeWrapper<T> {
     static <T> TreeNodeWrapperAnnotation<T> from(T obj) {
         Class<?> clazz = obj.getClass();
         Field[] fields = clazz.getDeclaredFields();
-
         Field field = ReflectUtil.findColumnByAnnotation(fields, NodeID.class);
         if (null == field) {
             throw new IllegalArgumentException(filedNotFoundMessageByAnnotation(NodeID.class.getName()));

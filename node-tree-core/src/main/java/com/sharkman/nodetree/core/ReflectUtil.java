@@ -51,6 +51,30 @@ public final class ReflectUtil {
         return null;
     }
 
+    /**
+     * 通过注解查找字段。
+     * 该方法会从指定类开始，向上递归查找字段（包括私有字段），直到找到第一个带有指定注解的字段为止。
+     *
+     * @param clazz 要开始查找的类，通常为对象的类或其超类。
+     * @param ann   要查找的注解类型。
+     * @return 返回带有指定注解的字段，如果未找到则返回null。
+     */
+    public static Field findColumnByAnnotation(Class<?> clazz, Class<? extends Annotation> ann) {
+        while (clazz != null) {
+            // 获取当前类声明的所有字段
+            Field[] declaredFields = clazz.getDeclaredFields();
+
+            // 在当前类的字段中查找带有指定注解的字段
+            Field founded = findColumnByAnnotation(declaredFields, ann);
+            if (null != founded) {
+                return founded;
+            }
+            // 继续向上追溯至父类
+            clazz = clazz.getSuperclass();
+        }
+        return null;
+    }
+
 
     /**
      * 首字母大写
