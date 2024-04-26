@@ -38,7 +38,7 @@ final class TreeCoreConstructor {
             }
             queue.add(parent);
             // 2. 把自己与父亲节点关联起来
-            List<TreeNodeProxy<T>> curBrothers = parent.getChildren();
+            List<TreeNodeProxy<T>> curBrothers = Optional.ofNullable(parent.getChildren()).orElse(new ArrayList<>());
             if (notContainsNode(curBrothers, curNode)) {
                 parent.addChild(curNode);
             }
