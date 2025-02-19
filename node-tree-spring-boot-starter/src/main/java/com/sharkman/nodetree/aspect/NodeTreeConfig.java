@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * <p> Description:节点树配置</p>
  * <p> CreationTime: 2021/8/27 16:21
- * <br>Email: <a href="mailto:yanpengyu@thunisoft.com">yanpengyu@thunisoft.com</a></p>
+ * <br>Email: <a href="mailto:526478642@qq.com">526478642@qq.com</a></p>
  *
  * @author yanpengyu
  * @version 1.0

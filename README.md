@@ -16,7 +16,7 @@ spring-boot 2.2.6.RELEASE
   <dependency>
       <groupId>com.sharkman</groupId>
       <artifactId>node-tree-spring-boot-starter</artifactId>
-      <version>2.0.0</version>
+      <version>2.1.0</version>
   </dependency>
   ```
 
@@ -139,7 +139,7 @@ spring-boot 2.2.6.RELEASE
   <dependency>
       <groupId>com.sharkman</groupId>
       <artifactId>node-tree-core</artifactId>
-      <version>2.0.0</version>
+      <version>2.1.0</version>
   </dependency>
   ```
 2. 创建树节点类，对象同上

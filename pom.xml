@@ -65,14 +65,14 @@
     </dependencyManagement>
     <distributionManagement>
         <repository>
-            <id>releases</id>
+            <id>nexus</id>
             <name>Sharkman snapshots repository</name>
-            <url>http://maven.r.io/releases</url>
+            <url>http://10.0.20.120:8081/repository/maven-releases</url>
         </repository>
         <snapshotRepository>
-            <id>snapshots</id>
+            <id>nexus</id>
             <name>Sharkman release repository</name>
-            <url>http://maven.r.io/snapshots</url>
+            <url>http://10.0.20.120:8081/repository/maven-snapshots</url>
         </snapshotRepository>
     </distributionManagement>
     <build>
