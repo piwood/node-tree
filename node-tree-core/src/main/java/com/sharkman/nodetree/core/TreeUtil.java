@@ -81,6 +81,22 @@ public final class TreeUtil {
     }
 
     /**
+     * 根据给定的列表和ID集合构建树形结构列表
+     * 此方法用于从一个给定的列表中构建一个树形结构的列表，其中只有ID在给定ID集合中的项会被包含在结果中
+     *
+     * @param vos 一个包含树节点对象的列表，这些对象应包含足够的信息来构建树形结构
+     * @param ids 一个包含期望节点ID的列表，用于过滤哪些节点应被包含在结果树形结构中
+     * @return 返回一个经过过滤并格式化为树形结构的列表
+     */
+    public static <T> List<T> buildTreeForList(List<T> vos, List<String> ids) {
+        // 使用HashSet来存储IDs，以提高查找效率
+        Set<String> idSet = new HashSet<>(ids);
+        // 调用代理方法来构建树形结构列表，根据节点的ID是否在idSet中来决定是否包含该节点
+        return buildTreeForListProxy(TreeNodeProxy.ofList(vos), n -> !idSet.isEmpty() && idSet.contains(n.getId()));
+    }
+
+
+    /**
      * 构建树形结构，并返回根节点
      *
      * @param vos 所有节点数据
